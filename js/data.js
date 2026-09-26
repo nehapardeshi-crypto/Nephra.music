@@ -25,6 +25,7 @@ window.NEPHRA_DATA = {
     { name: "Sunburn Festival", place: "Goa, India", kind: "Festival", tone: "disco" },
   ],
   pastSource: "https://ravist.in/artist/nephra",
+  showsFeed: "https://nephra-music-shows-651706741660.s3.ap-south-1.amazonaws.com/shows/shows.json",
   pastEvents: [
     { date: "Sat · 19 Sep 2026", title: "Nephra & Pri@x at Kadamba", venue: "Kadamba — Cultural Compound", url: "https://ravist.in/hyd/event/6aa550771b525780ff0d8ac3" },
     { date: "Sat · 05 Sep 2026", title: "Nephra & Full Moon: Afro, Funk, Disco & House", venue: "Kadamba — Cultural Compound", url: "https://ravist.in/hyd/event/6a969a3ac2b49dc8929ff19a" },

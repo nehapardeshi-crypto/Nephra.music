@@ -65,11 +65,78 @@ function Playlists() {
   );
 }
 
+const IST = { timeZone: "Asia/Kolkata" };
+const showDate = (iso) => {
+  const d = new Date(iso);
+  const p = (o) => d.toLocaleDateString("en-US", { ...IST, ...o });
+  return `${p({ weekday: "short" })} · ${p({ day: "2-digit" })} ${p({ month: "short" })} ${p({ year: "numeric" })}`;
+};
+const showTime = (iso) => new Date(iso).toLocaleTimeString("en-IN", { ...IST, hour: "numeric", minute: "2-digit" });
+
+function useShows() {
+  const D = window.NEPHRA_DATA;
+  const fallback = D.pastEvents.map((e) => ({ title: e.title, venue: e.venue, url: e.url, label: e.date }));
+  const [events, setEvents] = React.useState(null);
+  React.useEffect(() => {
+    let live = true;
+    fetch(D.showsFeed, { cache: "no-cache" }).then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
+      .then((d) => live && setEvents(d.events || []))
+      .catch(() => live && setEvents(fallback));
+    return () => { live = false; };
+  }, []);
+  if (!events) return { loading: true, upcoming: [], past: [] };
+  // A show stays "upcoming" until 12h after it starts, so it's listed through the night.
+  const cutoff = Date.now() - 12 * 3600e3;
+  const upcoming = events.filter((e) => e.start && new Date(e.start).getTime() >= cutoff && e.status !== "EventCancelled")
+    .sort((a, b) => a.start.localeCompare(b.start));
+  const past = events.filter((e) => !upcoming.includes(e));
+  return { loading: false, upcoming, past };
+}
+
+function Poster({ e, style }) {
+  const base = { display: "block", width: "100%", height: "100%", objectFit: "cover", background: "var(--ink-900)" };
+  if (e.posterVideo) return <video src={e.posterVideo + "#t=0.5"} muted playsInline loop preload="metadata" aria-label={e.title}
+    onMouseEnter={(v) => v.currentTarget.play().catch(() => {})} onMouseLeave={(v) => v.currentTarget.pause()} style={{ ...base, ...style }} />;
+  if (e.poster) return <img src={e.poster} alt={e.title} loading="lazy" style={{ ...base, ...style }} />;
+  return <div style={{ ...base, background: "var(--grad-signature)", ...style }} />;
+}
+
+function UpcomingCard({ e }) {
+  const [h, setH] = React.useState(false);
+  return (
+    <a href={e.url} target="_blank" rel="noreferrer" onMouseEnter={() => setH(true)} onMouseLeave={() => setH(false)}
+      style={{ display: "flex", flexDirection: "column", textDecoration: "none", color: "var(--ink-900)", background: "#fff", borderRadius: "var(--radius-lg)", overflow: "hidden", border: "1px solid var(--ink-100)", boxShadow: h ? "var(--shadow-lg)" : "var(--shadow-md)", transform: h ? "translateY(-3px)" : "none", transition: "all var(--dur-med) var(--ease-out)" }}>
+      <div style={{ aspectRatio: "4/5", overflow: "hidden" }}>
+        {e.posterVideo
+          ? <video src={e.posterVideo} poster={e.poster || undefined} muted playsInline loop autoPlay preload="metadata" aria-label={e.title} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+          : <Poster e={e} />}
+      </div>
+      <div style={{ padding: "18px 20px 20px", display: "flex", flexDirection: "column", gap: 8 }}>
+        <span style={{ ...mono(10.5, { fontWeight: 700, letterSpacing: "0.14em" }), color: "var(--violet)" }}>{showDate(e.start)} · {showTime(e.start)}</span>
+        <span style={{ font: "var(--text-h3)", fontSize: 22, lineHeight: 1.15 }}>{e.title}</span>
+        <span style={{ ...mono(10, { letterSpacing: "0.12em" }), color: "var(--ink-500)" }}>{e.venue}{e.city ? ` · ${e.city}` : ""}</span>
+        <span style={{ ...mono(11, { fontWeight: 700, letterSpacing: "0.14em" }), marginTop: 6 }}>Tickets & details →</span>
+      </div>
+    </a>
+  );
+}
+
 function Shows({ go }) {
+  const { loading, upcoming, past } = useShows();
+  const cities = [...new Set(past.map((e) => e.city).filter(Boolean))];
+  const years = [...new Set(past.map((e) => e.start && e.start.slice(0, 4)).filter(Boolean))];
   return (
     <section style={{ padding: pad }}>
       <div style={wrap}>
-        <Head index="03" kicker="Shows" title="New dates announcing soon." sub="Until then — a few of the stages Nephra has already played." />
+        <Head index="03" kicker="Shows" title={upcoming.length ? "Catch Nephra next." : "New dates announcing soon."} sub={upcoming.length ? "Upcoming dates, synced from ravist.in." : "Until then — a few of the stages Nephra has already played."} />
+        {upcoming.length > 0 && (
+          <div style={{ marginBottom: "clamp(48px,6vw,80px)" }}>
+            <div style={{ ...mono(11, { fontWeight: 700 }), paddingBottom: 12, marginBottom: 20, borderBottom: "1.5px solid var(--ink-900)" }}>● Upcoming · {upcoming.length} {upcoming.length === 1 ? "date" : "dates"}</div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(min(100%,260px),1fr))", gap: 20 }}>
+              {upcoming.map((e) => <UpcomingCard key={e.url} e={e} />)}
+            </div>
+          </div>
+        )}
         <div style={{ borderTop: "1.5px solid var(--ink-900)" }}>
           {window.NEPHRA_DATA.highlights.map((s, i) => (
             <div key={s.name} style={{ display: "grid", gridTemplateColumns: "auto minmax(0,1fr) auto", gap: "clamp(16px,3vw,40px)", alignItems: "center", padding: "clamp(18px,2.4vw,28px) 0", borderBottom: "1px solid var(--ink-200)" }}>
@@ -80,19 +147,24 @@ function Shows({ go }) {
           ))}
         </div>
         <div style={{ marginTop: 36, display: "flex", gap: 16, alignItems: "center", flexWrap: "wrap", padding: "22px 26px", borderRadius: "var(--radius-lg)", background: "var(--surface-tint)" }}>
-          <span style={{ ...mono(11, { fontWeight: 700 }), flex: 1, minWidth: 220 }}>● Upcoming 2026 dates — TBA</span>
+          <span style={{ ...mono(11, { fontWeight: 700 }), flex: 1, minWidth: 220 }}>{upcoming.length ? "● Want Nephra at your venue?" : `● Upcoming ${new Date().getFullYear()} dates — TBA`}</span>
           <MBtn variant="solid" onClick={() => go("contact")}>Book for your venue →</MBtn>
           <MBtn variant="ghost" as="a" href="https://instagram.com/nephraa.music" target="_blank">Follow for announcements</MBtn>
         </div>
         <div style={{ marginTop: "clamp(48px,6vw,80px)" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 16, flexWrap: "wrap", paddingBottom: 12, borderBottom: "1.5px solid var(--ink-900)" }}>
-            <span style={{ ...mono(11, { fontWeight: 700 }) }}>∞ Past Events · 2026 · Hyderabad</span>
+            <span style={{ ...mono(11, { fontWeight: 700 }) }}>∞ Past Events{years.length ? ` · ${years.length > 1 ? `${years[years.length - 1]}–${years[0]}` : years[0]}` : ""}{cities.length ? ` · ${cities.join(", ")}` : ""}</span>
             <a href={window.NEPHRA_DATA.pastSource} target="_blank" rel="noreferrer" style={{ ...mono(10, { letterSpacing: "0.14em" }), color: "var(--ink-500)", textDecoration: "none" }}>via ravist.in →</a>
           </div>
-          {window.NEPHRA_DATA.pastEvents.map((e) => (
-            <a key={e.url} href={e.url} target="_blank" rel="noreferrer" style={{ display: "grid", gridTemplateColumns: "minmax(120px,170px) minmax(0,1fr) auto", gap: "clamp(12px,3vw,32px)", alignItems: "baseline", padding: "16px 0", borderBottom: "1px solid var(--ink-200)", textDecoration: "none", color: "var(--ink-900)" }}>
-              <span style={{ ...mono(10.5, { letterSpacing: "0.12em" }), color: "var(--violet)" }}>{e.date}</span>
-              <span style={{ minWidth: 0 }}><span style={{ font: "var(--text-body)", fontSize: 18, fontWeight: 600, display: "block" }}>{e.title}</span><span style={{ ...mono(10, { letterSpacing: "0.12em" }), color: "var(--ink-500)" }}>{e.venue}</span></span>
+          {loading && <div style={{ ...mono(10.5), color: "var(--ink-400)", padding: "20px 0" }}>Loading shows…</div>}
+          {past.map((e) => (
+            <a key={e.url} href={e.url} target="_blank" rel="noreferrer" style={{ display: "grid", gridTemplateColumns: "56px minmax(0,1fr) auto", columnGap: "clamp(12px,2.4vw,24px)", alignItems: "center", padding: "14px 0", borderBottom: "1px solid var(--ink-200)", textDecoration: "none", color: "var(--ink-900)" }}>
+              <div style={{ width: 56, height: 70, borderRadius: 8, overflow: "hidden" }}><Poster e={e} /></div>
+              <span style={{ minWidth: 0, display: "flex", flexDirection: "column", gap: 4 }}>
+                <span style={{ ...mono(10.5, { letterSpacing: "0.12em" }), color: "var(--violet)" }}>{e.start ? showDate(e.start) : e.label}</span>
+                <span style={{ font: "var(--text-body)", fontSize: 17, fontWeight: 600, lineHeight: 1.3 }}>{e.title}</span>
+                <span style={{ ...mono(10, { letterSpacing: "0.12em" }), color: "var(--ink-500)" }}>{e.venue}</span>
+              </span>
               <span style={{ ...mono(11, { fontWeight: 700 }) }}>→</span>
             </a>
           ))}
