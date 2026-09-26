@@ -118,6 +118,12 @@ function Footer() {
           <img src="./assets/logos/nephra-white.png" alt="nephra" style={{ height: 22 }} />
           <span style={{ ...mono(10, { letterSpacing: "0.16em" }) }}>● Nephra · nephra.music · 2026</span>
         </div>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 24, paddingTop: 20, borderTop: "1px solid var(--ink-800)", flexWrap: "wrap", gap: 12 }}>
+          <span style={{ ...mono(10, { letterSpacing: "0.12em", textTransform: "none" }) }}>© 2026 Nephra. All rights reserved.</span>
+          <a href="https://ravist.in" target="_blank" rel="noopener" aria-label="Made with love from ravist" style={{ display: "inline-flex", alignItems: "center", gap: 8, color: "var(--ink-300)", textDecoration: "none", ...mono(10, { letterSpacing: "0.12em", textTransform: "none" }) }}>
+            <span aria-hidden="true">❤️ from</span><span className="ravist-mark" role="img" aria-hidden="true"></span>
+          </a>
+        </div>
       </div>
     </footer>
   );

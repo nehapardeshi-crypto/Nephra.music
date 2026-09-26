@@ -7,3 +7,21 @@
 @import url("tokens/colors.css");
 @import url("tokens/typography.css");
 @import url("tokens/layout.css");
+
+/* Ravist credit: logo used as a mask over Ravist's animated brand gradient */
+.ravist-mark {
+  display: inline-block;
+  height: 16px;
+  aspect-ratio: 932.1 / 188.8;
+  background: linear-gradient(-45deg, #ff2d92, #ff6b35, #00d4ff, #c6f135) 0 0 / 400% 400%;
+  animation: ravist-gradient 15s ease infinite;
+  -webkit-mask: url("assets/logos/ravist-logo.svg") center / contain no-repeat;
+  mask: url("assets/logos/ravist-logo.svg") center / contain no-repeat;
+}
+@keyframes ravist-gradient {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ravist-mark { animation: none; }
+}
