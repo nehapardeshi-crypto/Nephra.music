@@ -1,0 +1,142 @@
+/* NEPHRA website V2 — directory-tree index + single-destination views. */
+const TREE = [
+  { k: "about", l: "About" },
+  { k: "videos", l: "Videos" },
+  { l: "Music", kids: [{ k: "releases", l: "Releases" }, { k: "playlists", l: "Playlists" }] },
+  { k: "shows", l: "Shows" },
+  { k: "press", l: "Press Kit" },
+  { k: "contact", l: "Contact" },
+  { l: "Socials", kids: window.NEPHRA_DATA.socials.map((s) => ({ l: s.k, url: s.url })) },
+  { l: "Selected Press", kids: window.NEPHRA_DATA.pressLinks },
+];
+const LABEL = {}; TREE.forEach((n) => { if (n.k) LABEL[n.k] = n.l; (n.kids || []).forEach((c) => c.k && (LABEL[c.k] = c.l)); });
+
+function Branch({ last, children, depth }) {
+  const line = depth ? "var(--ink-300)" : "var(--ink-900)";
+  return (
+    <li style={{ position: "relative", listStyle: "none", paddingLeft: depth ? 26 : 34 }}>
+      <span style={{ position: "absolute", left: 0, top: 0, bottom: last ? "auto" : 0, height: last ? "calc(0.5em + 14px)" : "auto", borderLeft: `1.5px solid ${line}` }}></span>
+      <span style={{ position: "absolute", left: 0, top: "calc(0.5em + 14px)", width: depth ? 18 : 24, borderTop: `1.5px solid ${line}` }}></span>
+      {children}
+    </li>
+  );
+}
+
+function Node({ n, go, grad, depth, open, toggle }) {
+  const [h, setH] = React.useState(false);
+  const size = depth ? "clamp(15px,1.7vw,19px)" : "clamp(20px,2.6vw,30px)";
+  const st = { all: "unset", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 12, fontFamily: "var(--font-mono)", fontWeight: 700, fontSize: size, lineHeight: 1, letterSpacing: "0.04em", textTransform: "uppercase", padding: "14px 0", color: "var(--ink-900)", transition: "transform var(--dur-fast) var(--ease-out)", transform: h ? "translateX(6px)" : "none" };
+  const txt = <span style={h ? gradText(grad) : null}>{n.l}{n.kids || n.url ? "" : "/"}</span>;
+  const ev = { onMouseEnter: () => setH(true), onMouseLeave: () => setH(false) };
+  if (n.kids) return (
+    <button {...ev} onClick={toggle} aria-expanded={open} style={st}>{txt}
+      <span style={{ display: "grid", placeItems: "center", width: "0.7em", height: "0.7em", fontSize: "0.7em", background: open ? "var(--ink-900)" : "transparent", color: open ? "#fff" : "var(--ink-900)", border: "1.5px solid var(--ink-900)", lineHeight: 1 }}>{open ? "−" : "+"}</span>
+    </button>
+  );
+  if (n.url) return <a {...ev} href={n.url} target="_blank" rel="noreferrer" style={{ ...st, textDecoration: "none" }}>{txt}<span style={{ fontSize: "0.7em", opacity: h ? 1 : 0.35 }}>↗</span></a>;
+  return <a {...ev} href={"#/" + n.k} onClick={(e) => { e.preventDefault(); go(n.k); }} style={{ ...st, textDecoration: "none" }}>{txt}</a>;
+}
+
+function Tree({ go, grad }) {
+  const [open, setOpen] = React.useState({ Music: true });
+  return (
+    <ul style={{ margin: "0 0 0 10px", padding: 0 }}>
+      {TREE.map((n, i) => (
+        <Branch key={n.l} last={i === TREE.length - 1} depth={0}>
+          <Node n={n} go={go} grad={grad} depth={0} open={open[n.l]} toggle={() => setOpen((o) => ({ ...o, [n.l]: !o[n.l] }))} />
+          {n.kids && open[n.l] && (
+            <ul style={{ margin: "0 0 6px 4px", padding: 0, animation: "nfade var(--dur-med) var(--ease-out)" }}>
+              {n.kids.map((c, j) => <Branch key={c.l} last={j === n.kids.length - 1} depth={1}><Node n={c} go={go} grad={grad} depth={1} /></Branch>)}
+            </ul>
+          )}
+        </Branch>
+      ))}
+    </ul>
+  );
+}
+
+function TopBar({ grad, crumb, go }) {
+  return (
+    <header style={{ position: "sticky", top: 0, zIndex: 100, background: "var(--ink-950)", color: "#fff" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr auto 1fr", alignItems: "center", gap: 16, padding: "14px clamp(20px,4vw,48px)" }}>
+        <span style={{ ...mono(10.5), color: "var(--ink-400)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+          <a href="#/" onClick={(e) => { e.preventDefault(); go(""); }} style={{ color: crumb ? "var(--ink-300)" : "#fff", textDecoration: "none" }}>Home/</a>{crumb && <span style={{ color: "#fff" }}>{crumb}/</span>}
+        </span>
+        <a href="#/" onClick={(e) => { e.preventDefault(); go(""); }} style={{ display: "flex" }}><img src="./assets/logos/nephra-white.png" alt="nephra" style={{ height: 30 }} /></a>
+        <span style={{ ...mono(10.5, { fontWeight: 700 }), color: "#fff", textAlign: "right" }}>House & Techno</span>
+      </div>
+      <div style={{ height: 3, background: grad }}></div>
+    </header>
+  );
+}
+
+function Index({ go, grad, photo }) {
+  return (
+    <section style={{ position: "relative", overflow: "hidden", minHeight: "calc(100vh - 62px)", background: "var(--surface-tint)", padding: "clamp(40px,6vw,88px) clamp(20px,6vw,96px)", boxSizing: "border-box" }}>
+      <div style={{ position: "absolute", right: "-10%", top: "-10%", width: "70%", height: "120%", background: "var(--glow-violet)", pointerEvents: "none" }}></div>
+      <div style={{ position: "relative", maxWidth: 1240, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,420px),1fr))", gap: "clamp(40px,6vw,96px)", alignItems: "start" }}>
+        <nav aria-label="Site index">
+          <div style={{ marginBottom: "clamp(32px,4vw,52px)" }}>
+            <div style={{ fontFamily: "var(--font-display)", fontWeight: 600, fontSize: "clamp(28px,4.2vw,56px)", lineHeight: 1.05, letterSpacing: "-0.01em", color: "var(--ink-900)", display: "flex", flexWrap: "wrap", alignItems: "baseline", columnGap: "0.35em" }}><span>DJ</span><span style={{ color: "var(--ink-300)" }}>·</span><span>Producer</span><span style={{ color: "var(--ink-300)" }}>·</span><span>Curator</span></div>
+            <div style={{ display: "flex", alignItems: "center", gap: 14, marginTop: 18 }}>
+              <span style={{ width: 40, height: 3, background: grad }}></span>
+              <span style={{ ...mono("clamp(13px,1.4vw,16px)", { fontWeight: 700, letterSpacing: "0.24em" }), color: "var(--ink-900)", whiteSpace: "nowrap" }}>House & Techno</span>
+            </div>
+          </div>
+          <div style={{ fontFamily: "var(--font-mono)", fontWeight: 700, fontSize: "clamp(22px,3vw,34px)", letterSpacing: "0.04em", textTransform: "uppercase", marginBottom: 4 }}>Home/</div>
+          <Tree go={go} grad={grad} />
+        </nav>
+        <div style={{ position: "relative", maxWidth: 440, width: "100%", justifySelf: "end" }}>
+          <div style={{ position: "absolute", inset: "-5% -5% -5% 8%", borderRadius: "var(--radius-xl)", background: grad, opacity: 0.9 }}></div>
+          <img src={photo} alt="Nephra" style={{ position: "relative", display: "block", width: "100%", aspectRatio: "4/5", objectFit: "cover", objectPosition: "50% 25%", borderRadius: "var(--radius-xl)", boxShadow: "var(--shadow-lg)" }} />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Crumbs({ go, cur, grad }) {
+  const parent = TREE.find((n) => n.kids && n.kids.some((c) => c.k === cur));
+  const siblings = parent ? parent.kids.filter((c) => c.k) : TREE.filter((n) => n.k);
+  const trail = [["", "Home"], ...(parent ? [[null, parent.l]] : []), [cur, LABEL[cur]]];
+  return (
+    <nav aria-label="Breadcrumb" style={{ background: "var(--surface-tint)", borderBottom: "1px solid var(--ink-200)", padding: "clamp(18px,2.4vw,28px) clamp(20px,5vw,56px)" }}>
+      <div style={{ maxWidth: 1240, margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 20, flexWrap: "wrap" }}>
+        <ol style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", alignItems: "center", flexWrap: "wrap", gap: 10 }}>
+          {trail.map(([k, l], i) => {
+            const last = i === trail.length - 1;
+            const base = { fontFamily: "var(--font-mono)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.06em", whiteSpace: "nowrap", fontSize: last ? "clamp(20px,2.6vw,30px)" : "clamp(13px,1.4vw,15px)", textDecoration: "none" };
+            return (
+              <li key={i} style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                {i > 0 && <span style={{ fontFamily: "var(--font-mono)", color: "var(--ink-300)", fontSize: 18 }}>/</span>}
+                {last ? <span aria-current="page" style={{ ...base, ...gradText(grad) }}>{l}/</span>
+                  : k !== null ? <a href={"#/" + k} onClick={(e) => { e.preventDefault(); go(k); }} style={{ ...base, color: "var(--ink-500)", padding: "6px 12px", border: "1px solid var(--ink-200)", borderRadius: 99, background: "#fff" }}>← {l}</a>
+                  : <span style={{ ...base, color: "var(--ink-400)" }}>{l}</span>}
+              </li>
+            );
+          })}
+        </ol>
+        <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+          {siblings.map((s) => {
+            const on = s.k === cur;
+            return <a key={s.k} href={"#/" + s.k} onClick={(e) => { e.preventDefault(); go(s.k); }} style={{ ...mono(10, { fontWeight: 700, letterSpacing: "0.14em" }), textDecoration: "none", padding: "7px 12px", borderRadius: 99, background: on ? "var(--ink-900)" : "transparent", color: on ? "#fff" : "var(--ink-500)", border: on ? "1px solid var(--ink-900)" : "1px solid var(--ink-200)" }}>{s.l}</a>;
+          })}
+        </div>
+      </div>
+    </nav>
+  );
+}
+
+function BackBar({ go, cur }) {
+  const flat = []; TREE.forEach((n) => (n.kids ? n.kids.filter((c) => c.k).forEach((c) => flat.push(c)) : flat.push(n)));
+  const i = flat.findIndex((n) => n.k === cur), nx = flat[(i + 1) % flat.length];
+  const a = { ...mono(11, { fontWeight: 700, letterSpacing: "0.14em" }), color: "var(--ink-900)", textDecoration: "none", cursor: "pointer" };
+  return (
+    <div style={{ display: "flex", justifyContent: "space-between", gap: 16, padding: "22px clamp(20px,5vw,56px)", borderTop: "1px solid var(--ink-200)", background: "var(--paper)" }}>
+      <a href="#/" onClick={(e) => { e.preventDefault(); go(""); }} style={a}>← Index</a>
+      <a href={"#/" + nx.k} onClick={(e) => { e.preventDefault(); go(nx.k); }} style={a}>Next · {nx.l}/ →</a>
+    </div>
+  );
+}
+
+Object.assign(window, { TREE, LABEL, Tree, TopBar, Index, Crumbs, BackBar });

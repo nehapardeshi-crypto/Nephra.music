@@ -1,0 +1,59 @@
+/* ============================================================
+   NEPHRA · SPACING, RADII, SHADOW, MOTION
+   ============================================================ */
+:root {
+  /* ---- Spacing scale (4px base) -------------------------- */
+  --space-1:  0.25rem;  /* 4  */
+  --space-2:  0.5rem;   /* 8  */
+  --space-3:  0.75rem;  /* 12 */
+  --space-4:  1rem;     /* 16 */
+  --space-5:  1.5rem;   /* 24 */
+  --space-6:  2rem;     /* 32 */
+  --space-7:  3rem;     /* 48 */
+  --space-8:  4rem;     /* 64 */
+  --space-9:  6rem;     /* 96 */
+  --space-10: 8rem;     /* 128 */
+
+  /* ---- Layout ------------------------------------------- */
+  --measure:      66ch;   /* prose column  @kind spacing */
+  --container:    1200px; /* @kind spacing */
+  --container-wide: 1440px; /* @kind spacing */
+  --gutter:       clamp(1.25rem, 5vw, 4rem); /* @kind spacing */
+
+  /* ---- Corner radii -------------------------------------- */
+  /* Brand leans editorial-sharp; UI surfaces get a soft round,
+     pills/knobs get the fader-cap round. */
+  --radius-none: 0;
+  --radius-xs:   4px;
+  --radius-sm:   8px;
+  --radius-md:   14px;
+  --radius-lg:   22px;
+  --radius-xl:   32px;
+  --radius-pill: 999px;
+  --radius-knob: 7px;   /* the crossfader-cap radius */
+
+  /* ---- Borders ------------------------------------------ */
+  --border-hair: 1px;   /* @kind spacing */
+  --border-med:  1.5px; /* @kind spacing */
+  --border-bold: 2px;   /* @kind spacing */
+
+  /* ---- Shadows (soft, lilac-tinted — never harsh) -------- */
+  --shadow-sm:  0 1px 2px rgba(14,14,18,0.06);
+  --shadow-md:  0 6px 24px -8px rgba(60,20,110,0.18);
+  --shadow-lg:  0 20px 60px -18px rgba(60,20,110,0.28);
+  --shadow-glow: 0 0 0 1px rgba(124,77,255,0.14), 0 18px 48px -14px rgba(124,77,255,0.42);
+  --shadow-inset: inset 0 1px 0 rgba(255,255,255,0.6);
+
+  /* ---- Motion ------------------------------------------- */
+  --ease-out:   cubic-bezier(0.16, 1, 0.3, 1); /* @kind other */
+  --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);  /* @kind other */
+  --dur-fast:   140ms; /* @kind other */
+  --dur-med:    260ms; /* @kind other */
+  --dur-slow:   480ms; /* @kind other */
+
+  /* ---- Z ------------------------------------------------- */
+  --z-nav:    100;  /* @kind other */
+  --z-overlay:200; /* @kind other */
+  --z-modal:  300;  /* @kind other */
+  --z-toast:  400;  /* @kind other */
+}

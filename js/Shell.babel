@@ -1,0 +1,126 @@
+/* NEPHRA website — shared bits, header (scrollspy), home. */
+const { Button, Kicker, Fader } = window.NEPHRADesignSystem_3a7a44;
+
+const PALETTES = { disco: ["Disco", "var(--grad-disco)"], house: ["House", "var(--grad-house)"], techhouse: ["Tech House", "var(--grad-techhouse)"], sunset: ["Sunset", "var(--grad-sunset)"], signature: ["Signature", "var(--grad-signature)"] };
+const TONE = (t) => (PALETTES[t] || PALETTES.signature)[1];
+const TABS = [["home", "Home"], ["videos", "Videos"], ["playlists", "Playlists"], ["shows", "Shows"], ["releases", "Releases"], ["press", "Press Kit"], ["social", "Social"], ["contact", "Contact"]];
+const mono = (size = 11, extra = {}) => ({ fontFamily: "var(--font-mono)", fontSize: size, letterSpacing: "0.18em", textTransform: "uppercase", ...extra });
+const gradText = (g) => ({ background: g, WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent" });
+const wrap = { maxWidth: 1240, margin: "0 auto" };
+const pad = "clamp(56px,8vw,120px) clamp(20px,5vw,56px)";
+const PH = (f) => `./assets/photos/${f}.jpg`;
+
+function Head({ index, kicker, title, sub, dark }) {
+  return (
+    <div style={{ marginBottom: "clamp(28px,4vw,48px)" }}>
+      <Kicker style={{ marginBottom: 16, color: dark ? "var(--lilac-300)" : undefined }}>{index} · {kicker}</Kicker>
+      <h2 style={{ font: "var(--text-h2)", margin: 0, maxWidth: "20ch", color: dark ? "#fff" : "var(--ink-900)", textWrap: "balance" }}>{title}</h2>
+      {sub && <p style={{ font: "var(--text-lead)", color: dark ? "var(--ink-300)" : "var(--ink-500)", margin: "14px 0 0", maxWidth: "46ch", textWrap: "pretty" }}>{sub}</p>}
+    </div>
+  );
+}
+
+function Lift({ children, style, href, onClick, download, flat }) {
+  const [h, setH] = React.useState(false);
+  const Tag = href ? "a" : "div";
+  return (
+    <Tag href={href} download={download} target={href && !download ? "_blank" : undefined} rel="noreferrer" onClick={onClick} onMouseEnter={() => setH(true)} onMouseLeave={() => setH(false)}
+      style={{ display: "block", textDecoration: "none", color: "inherit", cursor: href || onClick ? "pointer" : "default", transform: h ? "translateY(-4px)" : "none", boxShadow: flat ? "none" : h ? "var(--shadow-lg)" : "var(--shadow-sm)", transition: "transform var(--dur-med) var(--ease-out), box-shadow var(--dur-med) var(--ease-out)", ...style }}>
+      {children}
+    </Tag>
+  );
+}
+
+function Header({ active, go, grad, tabStyle }) {
+  return (
+    <header style={{ position: "sticky", top: 0, zIndex: 100, background: "rgba(255,255,255,0.86)", backdropFilter: "saturate(1.4) blur(14px)", WebkitBackdropFilter: "saturate(1.4) blur(14px)", borderBottom: "1px solid var(--ink-100)" }}>
+      <div style={{ ...wrap, display: "flex", alignItems: "center", gap: "clamp(16px,3vw,40px)", padding: "0 clamp(20px,5vw,56px)" }}>
+        <a href="#home" onClick={(e) => { e.preventDefault(); go("home"); }} style={{ display: "flex", flexShrink: 0 }}><img src="./assets/logos/nephra-black.png" alt="nephra" style={{ height: 34 }} /></a>
+        <nav style={{ flex: 1, display: "flex", gap: tabStyle === "pill" ? 4 : "clamp(14px,2vw,28px)", overflowX: "auto", scrollbarWidth: "none", justifyContent: "flex-end", padding: "12px 0" }}>
+          {TABS.slice(1).map(([k, l]) => {
+            const on = active === k;
+            const base = { ...mono(10.5, { letterSpacing: "0.16em", fontWeight: 700 }), whiteSpace: "nowrap", textDecoration: "none", cursor: "pointer", transition: "all var(--dur-fast) var(--ease-out)" };
+            const st = tabStyle === "pill"
+              ? { ...base, padding: "8px 13px", borderRadius: 99, background: on ? "var(--ink-900)" : "transparent", color: on ? "#fff" : "var(--ink-500)" }
+              : { ...base, padding: "8px 0 6px", color: on ? "var(--ink-900)" : "var(--ink-400)", borderBottom: "2px solid transparent", borderImage: on ? `${grad} 1` : "none" };
+            return <a key={k} href={"#" + k} onClick={(e) => { e.preventDefault(); go(k); }} style={st}>{l}</a>;
+          })}
+        </nav>
+      </div>
+    </header>
+  );
+}
+
+function Home({ go, grad, palette, setPalette, photo }) {
+  const D = window.NEPHRA_DATA;
+  return (
+    <div>
+      <section style={{ position: "relative", overflow: "hidden", padding: "clamp(32px,5vw,72px) clamp(20px,5vw,56px) clamp(40px,5vw,64px)" }}>
+        <div style={{ position: "absolute", inset: "-20% -10% auto auto", width: "70%", height: "120%", background: "var(--glow-violet)", pointerEvents: "none" }} />
+        <div style={{ ...wrap, position: "relative", display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,420px),1fr))", gap: "clamp(32px,5vw,72px)", alignItems: "center" }}>
+          <div>
+            <div style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap", marginBottom: 24 }}><span style={{ ...mono("clamp(13px,1.5vw,17px)", { fontWeight: 700, letterSpacing: "0.22em" }), color: "var(--ink-900)" }}>DJ · Producer · Curator</span><span style={{ width: 28, height: 3, background: grad }}></span><span style={{ ...mono("clamp(13px,1.5vw,17px)", { fontWeight: 700, letterSpacing: "0.22em" }), ...gradText(grad) }}>House & Techno</span></div>
+            <h1 style={{ font: "var(--text-hero)", margin: "0 0 22px", letterSpacing: "-0.025em", textWrap: "balance" }}>
+              Fourteen years deep in India's <em style={{ fontStyle: "italic", ...gradText(grad) }}>underground</em>.
+            </h1>
+            <p style={{ font: "var(--text-lead)", color: "var(--ink-700)", maxWidth: "44ch", margin: "0 0 30px", textWrap: "pretty" }}>
+              Building floors that move like stories — deep grooves, melodic tension, and the long patient build of a room finding itself.
+            </p>
+            <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 34 }}>
+              <Button variant="solid" size="lg" onClick={() => go("videos")}>Watch Latest Set →</Button>
+              <Button variant="outline" size="lg" onClick={() => go("contact")}>Book Nephra</Button>
+            </div>
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
+              <span style={{ ...mono(10, { letterSpacing: "0.2em" }), color: "var(--ink-400)", marginRight: 4 }}>Tonight's spectrum</span>
+              {Object.entries(PALETTES).filter(([k]) => k !== "signature").map(([k, [l, g]]) => (
+                <button key={k} onClick={() => setPalette(k)} style={{ border: palette === k ? "1.5px solid var(--ink-900)" : "1.5px solid var(--ink-200)", background: palette === k ? g : "transparent", color: palette === k ? "#1a0a1a" : "var(--ink-500)", ...mono(10.5, { fontWeight: 700, letterSpacing: "0.16em" }), padding: "6px 12px", borderRadius: "var(--radius-pill)", cursor: "pointer", transition: "all var(--dur-fast) var(--ease-out)" }}>{l}</button>
+              ))}
+            </div>
+          </div>
+          <div style={{ position: "relative", maxWidth: 500, justifySelf: "center", width: "100%" }}>
+            <div style={{ position: "absolute", inset: "-6% -6% -6% 8%", borderRadius: "var(--radius-xl)", background: grad, opacity: 0.9, transition: "background var(--dur-med)" }} />
+            <img src={photo} alt="Nephra" style={{ position: "relative", width: "100%", aspectRatio: "4/5", objectFit: "cover", objectPosition: "50% 30%", borderRadius: "var(--radius-xl)", display: "block", boxShadow: "var(--shadow-lg)" }} />
+          </div>
+        </div>
+        <div style={{ ...wrap, marginTop: "clamp(40px,5vw,64px)" }}><Fader value={{ disco: 0.2, house: 0.45, techhouse: 0.72, sunset: 0.9 }[palette] ?? 0.5} /></div>
+      </section>
+
+      <section aria-label="Gallery" style={{ padding: "0 0 clamp(48px,6vw,88px)", overflow: "hidden" }}>
+        <div style={{ display: "flex", gap: 14, overflowX: "auto", padding: "0 clamp(20px,5vw,56px)", scrollbarWidth: "none", scrollSnapType: "x mandatory" }}>
+          {D.photos.map(([f, , l]) => (
+            <img key={f} src={PH(f)} alt={l} style={{ flex: "0 0 auto", height: "clamp(240px,30vw,380px)", aspectRatio: "3/4", objectFit: "cover", objectPosition: "50% 25%", borderRadius: "var(--radius-lg)", scrollSnapAlign: "start" }} />
+          ))}
+        </div>
+      </section>
+
+      <section style={{ padding: "clamp(40px,5vw,72px) clamp(20px,5vw,56px)", background: "var(--ink-900)", color: "#fff", position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", right: "-10%", top: "-60%", width: "50%", height: "220%", background: grad, opacity: 0.35, filter: "blur(80px)", borderRadius: "50%" }} />
+        <div style={{ ...wrap, position: "relative", display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,200px),1fr))", gap: "clamp(20px,3vw,48px)" }}>
+          {D.stats.map(([v, l, s]) => (
+            <div key={l} style={{ borderLeft: "1px solid var(--ink-700)", paddingLeft: 20 }}>
+              <div style={{ fontFamily: "var(--font-display)", fontWeight: 600, fontSize: "clamp(2.6rem,5vw,4rem)", lineHeight: 0.95, ...gradText(grad) }}>{v}</div>
+              <div style={{ ...mono(12, { fontWeight: 700 }), margin: "10px 0 4px" }}>{l}</div>
+              <div style={{ ...mono(10, { letterSpacing: "0.14em" }), color: "var(--ink-400)" }}>{s}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function Footer() {
+  return (
+    <footer style={{ background: "var(--ink-950)", color: "var(--ink-400)", padding: "40px clamp(20px,5vw,56px)", borderTop: "1px solid var(--ink-800)" }}>
+      <div style={wrap}>
+        <Fader value={0.5} gradient knob />
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 28, flexWrap: "wrap", gap: 16 }}>
+          <img src="./assets/logos/nephra-white.png" alt="nephra" style={{ height: 22 }} />
+          <span style={{ ...mono(10, { letterSpacing: "0.16em" }) }}>● Nephra · nephra.music · 2026</span>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+Object.assign(window, { PALETTES, TONE, TABS, mono, gradText, wrap, pad, PH, Head, Lift, Header, Home, Footer });

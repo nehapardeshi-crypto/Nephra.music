@@ -1,0 +1,131 @@
+/* NEPHRA website — videos, playlists, shows, releases. */
+const { Button: MBtn } = window.NEPHRADesignSystem_3a7a44;
+
+function VideoTile({ v, big, n }) {
+  const [on, setOn] = React.useState(false);
+  const [h, setH] = React.useState(false);
+  return (
+    <div onMouseEnter={() => setH(true)} onMouseLeave={() => setH(false)} style={{ position: "relative", aspectRatio: "16/9", borderRadius: "var(--radius-lg)", overflow: "hidden", background: "var(--ink-900)", boxShadow: h ? "var(--shadow-lg)" : "var(--shadow-sm)", transition: "box-shadow var(--dur-med) var(--ease-out)" }}>
+      {on ? (
+        <iframe src={`https://www.youtube-nocookie.com/embed/${v.id}?autoplay=1&rel=0`} title={v.title || "NEPHRA video"} allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowFullScreen style={{ position: "absolute", inset: 0, width: "100%", height: "100%", border: 0 }}></iframe>
+      ) : (
+        <button onClick={() => setOn(true)} aria-label="Play video" style={{ all: "unset", position: "absolute", inset: 0, cursor: "pointer" }}>
+          <img src={`https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", transform: h ? "scale(1.03)" : "none", transition: "transform var(--dur-slow,400ms) var(--ease-out)" }} />
+          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg,transparent 50%,rgba(8,8,11,.65))" }} />
+          <div style={{ position: "absolute", left: "50%", top: "50%", transform: `translate(-50%,-50%) scale(${h ? 1.06 : 1})`, width: big ? 80 : 54, height: big ? 80 : 54, borderRadius: "50%", background: "rgba(255,255,255,.94)", display: "grid", placeItems: "center", fontSize: big ? 22 : 15, color: "var(--ink-900)", boxShadow: "var(--shadow-md)", transition: "transform var(--dur-med) var(--ease-out)", paddingLeft: 3, boxSizing: "border-box" }}>▶</div>
+          <div style={{ position: "absolute", left: big ? 24 : 14, bottom: big ? 20 : 12, right: 14, color: "#fff" }}>
+            <div style={{ ...mono(big ? 10 : 9) }}>▶ {String(n).padStart(2, "0")}{v.title ? "" : " · Play on page"}</div>
+            {v.title && <div style={{ font: "var(--text-h3)", fontSize: big ? "clamp(22px,3vw,32px)" : 18, color: "#fff", marginTop: 4 }}>{v.title}</div>}
+          </div>
+        </button>
+      )}
+    </div>
+  );
+}
+
+function Videos() {
+  const [f, ...rest] = window.NEPHRA_DATA.videos;
+  const yt = window.NEPHRA_DATA.socials[1].url;
+  return (
+    <section style={{ padding: pad }}>
+      <div style={wrap}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", gap: 24, flexWrap: "wrap" }}>
+          <Head index="01" kicker="Videos" title="Long-form sets, recorded live." sub="Live recordings and visual sessions from the YouTube archive." />
+          <div style={{ marginBottom: "clamp(28px,4vw,48px)" }}><MBtn variant="outline" as="a" href={yt} target="_blank">YouTube Channel →</MBtn></div>
+        </div>
+        <div style={{ marginBottom: 18 }}><VideoTile v={f} big n={1} /></div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,280px),1fr))", gap: 18 }}>
+          {rest.map((v, i) => <VideoTile key={v.id} v={v} n={i + 2} />)}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Playlists() {
+  return (
+    <section style={{ padding: pad, background: "var(--ink-950)", position: "relative", overflow: "hidden" }}>
+      <img src={PH("press-halter-02")} alt="" style={{ position: "absolute", right: 0, top: 0, height: "100%", width: "min(55%,720px)", objectFit: "cover", objectPosition: "50% 20%", opacity: 0.4, WebkitMaskImage: "linear-gradient(90deg,transparent,#000 70%)", maskImage: "linear-gradient(90deg,transparent,#000 70%)" }} />
+      <div style={{ ...wrap, position: "relative" }}>
+        <Head dark index="02" kicker="Playlists & Mixes" title="Radio, residencies and the archive." sub="Guest mixes, residency shows and studio sessions across four platforms." />
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,250px),1fr))", gap: 16 }}>
+          {window.NEPHRA_DATA.playlists.map((p) => (
+            <Lift key={p.title} href={p.url} flat style={{ background: "rgba(23,23,29,.88)", backdropFilter: "blur(10px)", WebkitBackdropFilter: "blur(10px)", border: "1px solid var(--ink-800)", color: "#fff", borderRadius: "var(--radius-lg)", padding: 28, position: "relative", overflow: "hidden", minHeight: 250, display: "flex", flexDirection: "column", gap: 12 }}>
+              <div style={{ position: "absolute", right: "-30%", bottom: "-50%", width: "80%", height: "80%", background: TONE(p.tone), opacity: 0.5, filter: "blur(40px)", borderRadius: "50%" }} />
+              <div style={{ position: "relative", fontSize: 26, lineHeight: 1 }}>{p.g}</div>
+              <div style={{ position: "relative", font: "var(--text-h3)", fontSize: 24, color: "#fff" }}>{p.title}</div>
+              <div style={{ position: "relative", ...mono(10, { letterSpacing: "0.16em" }), color: "var(--lilac-300)" }}>{p.meta}</div>
+              <p style={{ position: "relative", font: "var(--text-body)", fontSize: 15, color: "var(--ink-300)", margin: 0, flex: 1 }}>{p.body}</p>
+              <div style={{ position: "relative", ...mono(11, { fontWeight: 700, letterSpacing: "0.14em" }) }}>{p.cta} →</div>
+            </Lift>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Shows({ go }) {
+  return (
+    <section style={{ padding: pad }}>
+      <div style={wrap}>
+        <Head index="03" kicker="Shows" title="New dates announcing soon." sub="Until then — a few of the stages Nephra has already played." />
+        <div style={{ borderTop: "1.5px solid var(--ink-900)" }}>
+          {window.NEPHRA_DATA.highlights.map((s, i) => (
+            <div key={s.name} style={{ display: "grid", gridTemplateColumns: "auto minmax(0,1fr) auto", gap: "clamp(16px,3vw,40px)", alignItems: "center", padding: "clamp(18px,2.4vw,28px) 0", borderBottom: "1px solid var(--ink-200)" }}>
+              <span style={{ ...mono(11), color: "var(--ink-400)", width: 36 }}>{String(i + 1).padStart(2, "0")}</span>
+              <span style={{ fontFamily: "var(--font-display)", fontWeight: 600, fontSize: "clamp(1.8rem,4.4vw,3.6rem)", lineHeight: 1, letterSpacing: "-0.02em", ...gradText(TONE(s.tone)), paddingBottom: 4 }}>{s.name}</span>
+              <span style={{ ...mono(10.5, { letterSpacing: "0.14em" }), color: "var(--ink-500)", textAlign: "right", lineHeight: 1.6 }}>{s.place}<br />{s.kind}</span>
+            </div>
+          ))}
+        </div>
+        <div style={{ marginTop: 36, display: "flex", gap: 16, alignItems: "center", flexWrap: "wrap", padding: "22px 26px", borderRadius: "var(--radius-lg)", background: "var(--surface-tint)" }}>
+          <span style={{ ...mono(11, { fontWeight: 700 }), flex: 1, minWidth: 220 }}>● Upcoming 2026 dates — TBA</span>
+          <MBtn variant="solid" onClick={() => go("contact")}>Book for your venue →</MBtn>
+          <MBtn variant="ghost" as="a" href="https://instagram.com/nephraa.music" target="_blank">Follow for announcements</MBtn>
+        </div>
+        <div style={{ marginTop: "clamp(48px,6vw,80px)" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 16, flexWrap: "wrap", paddingBottom: 12, borderBottom: "1.5px solid var(--ink-900)" }}>
+            <span style={{ ...mono(11, { fontWeight: 700 }) }}>∞ Past Events · 2026 · Hyderabad</span>
+            <a href={window.NEPHRA_DATA.pastSource} target="_blank" rel="noreferrer" style={{ ...mono(10, { letterSpacing: "0.14em" }), color: "var(--ink-500)", textDecoration: "none" }}>via ravist.in →</a>
+          </div>
+          {window.NEPHRA_DATA.pastEvents.map((e) => (
+            <a key={e.url} href={e.url} target="_blank" rel="noreferrer" style={{ display: "grid", gridTemplateColumns: "minmax(120px,170px) minmax(0,1fr) auto", gap: "clamp(12px,3vw,32px)", alignItems: "baseline", padding: "16px 0", borderBottom: "1px solid var(--ink-200)", textDecoration: "none", color: "var(--ink-900)" }}>
+              <span style={{ ...mono(10.5, { letterSpacing: "0.12em" }), color: "var(--violet)" }}>{e.date}</span>
+              <span style={{ minWidth: 0 }}><span style={{ font: "var(--text-body)", fontSize: 18, fontWeight: 600, display: "block" }}>{e.title}</span><span style={{ ...mono(10, { letterSpacing: "0.12em" }), color: "var(--ink-500)" }}>{e.venue}</span></span>
+              <span style={{ ...mono(11, { fontWeight: 700 }) }}>→</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Releases() {
+  const D = window.NEPHRA_DATA, M = D.releaseMeta;
+  return (
+    <section style={{ padding: pad, background: "var(--surface-tint)" }}>
+      <div style={wrap}>
+        <Head index="04" kicker="Releases" title="Originals on Natural Rhythm." sub={`Two ${M.year} productions for the ${M.label} (${M.country}) compilation ${M.comp} — disco-inflected warmth over hypnotic, architectural rhythm.`} />
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,420px),1fr))", gap: 24 }}>
+          {D.releases.map((r, i) => (
+            <div key={r.spotify} style={{ background: "#fff", borderRadius: "var(--radius-lg)", border: "1px solid var(--ink-100)", boxShadow: "var(--shadow-md)", padding: 22, display: "flex", flexDirection: "column", gap: 16 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 12, flexWrap: "wrap" }}>
+                <div>
+                  <div style={{ ...mono(10), color: "var(--violet)" }}>♯ {String(i + 1).padStart(2, "0")} · Original · {M.year}</div>
+                  <div style={{ font: "var(--text-h3)", fontSize: 30, marginTop: 6 }}>{r.title}</div>
+                </div>
+                <span style={{ ...mono(10, { letterSpacing: "0.14em" }), color: "var(--ink-500)" }}>{M.label} · {M.comp}</span>
+              </div>
+              <iframe src={`https://open.spotify.com/embed/track/${r.spotify}?utm_source=generator`} title={r.title} height="152" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" style={{ width: "100%", border: 0, borderRadius: 12, display: "block" }}></iframe>
+              <a href={`https://open.spotify.com/track/${r.spotify}`} target="_blank" rel="noreferrer" style={{ ...mono(11, { fontWeight: 700, letterSpacing: "0.14em" }), color: "var(--ink-900)", textDecoration: "none" }}>Open in Spotify →</a>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+Object.assign(window, { Videos, Playlists, Shows, Releases });

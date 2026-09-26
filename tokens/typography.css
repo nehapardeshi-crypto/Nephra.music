@@ -1,0 +1,59 @@
+/* ============================================================
+   NEPHRA · TYPE TOKENS
+   Three-voice system:
+     · Display  — editorial Didone serif (big statements)
+     · Body     — readable serif (biography prose)
+     · Mono     — tracked uppercase labels, metadata, kickers
+   The wordmark itself is a bespoke rounded logotype supplied as
+   art (see /assets/logos) — not a webfont.
+   ============================================================ */
+:root {
+  --font-display: "Bodoni Moda", "Didot", Georgia, serif;
+  --font-body:    "Newsreader", "Iowan Old Style", Georgia, serif;
+  --font-mono:    "Space Mono", "IBM Plex Mono", ui-monospace, monospace;
+
+  /* ---- Fluid display sizes -------------------------------- */
+  --fs-display-xl: clamp(3.5rem, 8vw, 7rem);    /* @kind font */
+  --fs-display-l:  clamp(2.5rem, 5vw, 4.25rem); /* @kind font */
+  --fs-display-m:  clamp(2rem, 3.6vw, 3rem);    /* @kind font */
+  --fs-display-s:  clamp(1.6rem, 2.6vw, 2.1rem);/* @kind font */
+
+  /* ---- Text sizes ---------------------------------------- */
+  --fs-lead: 1.375rem;  /* 22 — standfirst  @kind font */
+  --fs-body: 1.0625rem; /* 17               @kind font */
+  --fs-sm:   0.9375rem; /* 15               @kind font */
+
+  /* ---- Label / mono sizes (tracked caps) ----------------- */
+  --fs-label:    0.8125rem; /* 13  @kind font */
+  --fs-label-sm: 0.6875rem; /* 11  @kind font */
+  --fs-kicker:   0.75rem;   /* 12  @kind font */
+
+  /* ---- Weights ------------------------------------------- */
+  --fw-display:   500; /* @kind font */
+  --fw-display-b: 700; /* @kind font */
+  --fw-body:      400; /* @kind font */
+  --fw-body-md:   500; /* @kind font */
+  --fw-mono:      400; /* @kind font */
+  --fw-mono-b:    700; /* @kind font */
+
+  /* ---- Line heights -------------------------------------- */
+  --lh-tight:   1.02;  /* @kind font */
+  --lh-display: 1.06;  /* @kind font */
+  --lh-snug:    1.28;  /* @kind font */
+  --lh-body:    1.62;  /* @kind font */
+
+  /* ---- Letter spacing ------------------------------------ */
+  --ls-display: -0.02em;   /* @kind font */
+  --ls-body:    0;         /* @kind font */
+  --ls-label:   0.28em;    /* the signature wide-tracked caps  @kind font */
+  --ls-label-t: 0.18em;    /* @kind font */
+  --ls-kicker:  0.34em;    /* @kind font */
+
+  /* ---- Semantic type roles ------------------------------- */
+  --text-hero: var(--fw-display) var(--fs-display-xl)/var(--lh-tight) var(--font-display);   /* @kind font */
+  --text-h1:   var(--fw-display) var(--fs-display-l)/var(--lh-display) var(--font-display);  /* @kind font */
+  --text-h2:   var(--fw-display) var(--fs-display-m)/var(--lh-display) var(--font-display);  /* @kind font */
+  --text-h3:   var(--fw-display) var(--fs-display-s)/1.2 var(--font-display);                /* @kind font */
+  --text-lead: var(--fw-body) var(--fs-lead)/var(--lh-snug) var(--font-body);                /* @kind font */
+  --text-body: var(--fw-body) var(--fs-body)/var(--lh-body) var(--font-body);                /* @kind font */
+}

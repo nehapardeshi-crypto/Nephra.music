@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NEPHRA · DJ · Producer · Curator · House & Techno</title>
+<meta name="description" content="NEPHRA — Hyderabad-based DJ, producer and curator. House & Techno.">
+<meta property="og:title" content="NEPHRA · DJ · Producer · Curator">
+<meta property="og:description" content="House & Techno. Videos, releases, shows, press kit and booking.">
+<meta property="og:image" content="./assets/photos/press-pink-headphones.jpg">
+<link rel="icon" href="./assets/logos/nephra-black.png">
+<link rel="stylesheet" href="./styles.css">
+<style>html,body{margin:0;background:var(--surface-tint)}a{color:var(--link)}a:hover{color:var(--link-hover)}::selection{background:var(--lilac-200)}div::-webkit-scrollbar{display:none}@keyframes nfade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="./js/ds-bundle.js"></script>
+<script src="./js/data.js"></script>
+<script type="text/babel" src="./js/tweaks-panel.babel"></script>
+<script type="text/babel" src="./js/Shell.babel"></script>
+<script type="text/babel" src="./js/Media.babel"></script>
+<script type="text/babel" src="./js/Kit.babel"></script>
+<script type="text/babel" src="./js/Tree.babel"></script>
+<script type="text/babel">
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{"palette":"sunset","heroPhoto":"press-pink-headphones"}/*EDITMODE-END*/;
+function App() {
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  const read = () => { const h = location.hash.replace(/^#\/?/, ""); return LABEL[h] ? h : ""; };
+  const [page, setPage] = React.useState(read);
+  React.useEffect(() => { const f = () => setPage(read()); addEventListener("hashchange", f); return () => removeEventListener("hashchange", f); }, []);
+  const go = (k) => { location.hash = "/" + k; setPage(k); window.scrollTo(0, 0); };
+  const grad = TONE(t.palette);
+  const views = {
+    about: <Home go={(k) => go(LABEL[k] ? k : "")} grad={grad} palette={t.palette} setPalette={(v) => setTweak("palette", v)} photo={PH(t.heroPhoto)} />,
+    videos: <Videos />, releases: <Releases />, playlists: <Playlists />, shows: <Shows go={go} />, press: <PressKit />, contact: <Contact />,
+  };
+  return (
+    <div>
+      <TopBar grad={grad} crumb={page ? LABEL[page] : ""} go={go} />
+      {page ? (
+        <main key={page} data-screen-label={LABEL[page]} style={{ animation: "nfade var(--dur-med) var(--ease-out)", background: "var(--paper)" }}><Crumbs go={go} cur={page} grad={grad} />{views[page]}<BackBar go={go} cur={page} /></main>
+      ) : (
+        <main data-screen-label="Index"><Index go={go} grad={grad} photo={PH(t.heroPhoto)} /></main>
+      )}
+      <Footer />
+      <TweaksPanel>
+        <TweakSection label="Brand" />
+        <TweakSelect label="Spectrum" value={t.palette} options={[{value:"disco",label:"Disco"},{value:"house",label:"House"},{value:"techhouse",label:"Tech House"},{value:"sunset",label:"Sunset"},{value:"signature",label:"Signature"}]} onChange={(v) => setTweak("palette", v)} />
+        <TweakSelect label="Photo" value={t.heroPhoto} options={window.NEPHRA_DATA.photos.map(([f,,l]) => ({ value: f, label: l }))} onChange={(v) => setTweak("heroPhoto", v)} />
+      </TweaksPanel>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>

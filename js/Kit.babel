@@ -1,0 +1,146 @@
+/* NEPHRA website — press kit, social, contact. */
+const { Button: KBtn } = window.NEPHRADesignSystem_3a7a44;
+
+function DlTile({ src, href, label, bg, logo, ext = "JPG" }) {
+  return (
+    <Lift href={href || src} download="" style={{ background: "#fff", border: "1px solid var(--ink-100)", borderRadius: "var(--radius-lg)", overflow: "hidden" }}>
+      <div style={{ aspectRatio: logo ? "16/9" : "3/4", background: bg || "var(--backdrop-pink)", display: "grid", placeItems: "center" }}>
+        <img src={src} alt={label} loading="lazy" style={logo ? { width: "62%" } : { width: "100%", height: "100%", objectFit: "cover", objectPosition: "50% 25%", display: "block" }} />
+      </div>
+      <div style={{ display: "flex", justifyContent: "space-between", gap: 8, padding: "12px 16px", ...mono(10, { letterSpacing: "0.12em" }) }}><span style={{ color: "var(--ink-500)" }}>{label}</span><span style={{ fontWeight: 700, whiteSpace: "nowrap" }}>↓ {ext}</span></div>
+    </Lift>
+  );
+}
+
+const kitSub = { ...mono(11, { fontWeight: 700 }), color: "var(--ink-900)", margin: "0 0 18px", paddingBottom: 12, borderBottom: "1.5px solid var(--ink-900)" };
+const kitBlock = { marginTop: "clamp(48px,6vw,80px)" };
+const kitRow = { display: "flex", gap: 16, padding: "13px 0", borderBottom: "1px solid var(--ink-200)", font: "var(--text-body)", color: "var(--ink-800)" };
+
+function PressKit() {
+  const D = window.NEPHRA_DATA;
+  return (
+    <section style={{ padding: pad }}>
+      <div style={wrap}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", gap: 24, flexWrap: "wrap" }}>
+          <Head index="05" kicker="Press Kit" title="Everything a promoter or editor needs." />
+          <div style={{ marginBottom: "clamp(28px,4vw,48px)" }}><KBtn variant="gradient" size="lg" as="a" href="./assets/press/NEPHRA-Press-Deck-2026.pdf" download="">↓ Press Deck PDF</KBtn></div>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,340px),1fr))", gap: "clamp(28px,5vw,72px)" }}>
+          <div>
+            <h3 style={kitSub}>Short Bio</h3>
+            <p style={{ font: "var(--text-body)", color: "var(--ink-800)", margin: 0 }}>Nephra (Neha Pardeshi) is a Hyderabad-based DJ, producer, and curator active since 2012. Her sets move across house, tech house, disco, and techno — from Magnetic Fields and Sunburn to Amsterdam Dance Event. In 2025 she released two originals on Romanian label Natural Rhythm.</p>
+            <h3 style={{ ...kitSub, marginTop: 40 }}>By the Numbers</h3>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px 20px" }}>
+              {D.stats.map(([v, l, s]) => (
+                <div key={l}>
+                  <div style={{ fontFamily: "var(--font-display)", fontWeight: 600, fontSize: 44, lineHeight: 1, ...gradText("var(--grad-signature)") }}>{v}</div>
+                  <div style={{ ...mono(10.5, { fontWeight: 700, letterSpacing: "0.14em" }), marginTop: 8 }}>{l}</div>
+                  <div style={{ ...mono(9.5, { letterSpacing: "0.12em" }), color: "var(--ink-400)", marginTop: 3 }}>{s}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div>
+            <h3 style={kitSub}>Long Bio</h3>
+            <div style={{ font: "var(--text-body)", color: "var(--ink-800)" }}>
+              <p style={{ margin: "0 0 14px" }}><span style={{ fontFamily: "var(--font-display)", fontSize: "3.1em", float: "left", lineHeight: 0.72, padding: "8px 12px 0 0", fontWeight: 600 }}>S</span>ince 2012, Nephra has been a Hyderabad-based DJ, producer, and curator who builds the room before most people notice it exists. Her sets read like fiction: deep grooves, melodic tension, and the long patient build of a floor finding itself.</p>
+              <p style={{ margin: "0 0 14px" }}>House, tech house, disco, techno — held together by a producer's ear and a storyteller's instinct. Over fourteen years she has played from Magnetic Fields Festival and Sunburn at home, to Amsterdam Dance Event and New York City abroad.</p>
+              <p style={{ margin: 0 }}>In 2025 she stepped further into production with two original releases on Natural Rhythm — a respected Romanian underground label — pairing disco-inflected warmth with hypnotic, architectural rhythm.</p>
+            </div>
+          </div>
+        </div>
+
+        <div style={kitBlock}>
+          <h3 style={kitSub}>Press Photos · Full resolution</h3>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(min(100%,190px),1fr))", gap: 16 }}>
+            {D.photos.map(([f, hi, l]) => <DlTile key={f} src={PH(f)} href={`./assets/press/${hi}.jpg`} label={l} />)}
+          </div>
+        </div>
+
+        <div style={kitBlock}>
+          <h3 style={kitSub}>Logos</h3>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(min(100%,190px),1fr))", gap: 16 }}>
+            {[["black", "Black", "#fff"], ["white", "White", "var(--ink-900)"], ["disco", "Disco", "var(--ink-900)"], ["sunset", "Sunset", "var(--ink-900)"], ["house", "House", "var(--ink-900)"], ["techhouse", "Tech House", "var(--ink-900)"]].map(([f, l, bg]) => (
+              <DlTile key={f} logo src={`./assets/logos/nephra-${f}.png`} label={l} bg={bg} ext="PNG" />
+            ))}
+          </div>
+        </div>
+
+        <div style={{ ...kitBlock, display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,340px),1fr))", gap: "clamp(28px,5vw,72px)" }}>
+          <div>
+            <h3 style={kitSub}>Selected Press</h3>
+            {D.press.map(([o, q]) => (
+              <div key={o} style={{ padding: "14px 0", borderBottom: "1px solid var(--ink-200)" }}>
+                <div style={{ ...mono(10), color: "var(--violet)", marginBottom: 6 }}>{o}</div>
+                <div style={{ font: "var(--text-body)", color: "var(--ink-800)" }}>{q}</div>
+              </div>
+            ))}
+          </div>
+          <div>
+            <h3 style={kitSub}>Tech & Hospitality Rider</h3>
+            {[["Equipment", D.rider.tech], ["Console", D.rider.console], ["Hospitality", D.rider.hospitality]].map(([k, list]) => (
+              <div key={k} style={{ marginBottom: 22 }}>
+                <div style={{ ...mono(10), color: "var(--violet)", margin: "4px 0 2px" }}>{k}</div>
+                {list.map((x) => <div key={x} style={kitRow}><span style={{ color: "var(--ink-400)" }}>·</span><span>{x}</span></div>)}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Social({ grad }) {
+  return (
+    <section style={{ padding: pad, background: "var(--surface-tint)" }}>
+      <div style={wrap}>
+        <Head index="06" kicker="Social Media" title="Follow the floor." sub="Gig drops, new sets and behind-the-booth moments." />
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,250px),1fr))", gap: 16 }}>
+          {window.NEPHRA_DATA.socials.map((s, i) => (
+            <Lift key={s.k} href={s.url} style={{ background: i === 0 ? "var(--ink-900)" : "#fff", color: i === 0 ? "#fff" : "var(--ink-900)", border: "1px solid var(--ink-100)", borderRadius: "var(--radius-lg)", padding: 28, position: "relative", overflow: "hidden", minHeight: 210, display: "flex", flexDirection: "column" }}>
+              {i === 0 && <div style={{ position: "absolute", right: "-20%", top: "-40%", width: "80%", height: "100%", background: grad, opacity: 0.5, filter: "blur(50px)", borderRadius: "50%" }} />}
+              <div style={{ position: "relative", ...mono(11, { fontWeight: 700 }), color: i === 0 ? "var(--lilac-300)" : "var(--violet)" }}>{s.k}</div>
+              <div style={{ position: "relative", font: "var(--text-h3)", fontSize: "clamp(22px,2.2vw,28px)", margin: "auto 0 8px", paddingTop: 36, color: "inherit", overflowWrap: "anywhere" }}>{s.v}</div>
+              <div style={{ position: "relative", display: "flex", justifyContent: "space-between", gap: 8, ...mono(9.5, { letterSpacing: "0.12em" }), color: i === 0 ? "var(--ink-300)" : "var(--ink-500)" }}><span>{s.note}</span><span style={{ fontWeight: 700, whiteSpace: "nowrap" }}>Follow →</span></div>
+            </Lift>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Contact() {
+  const D = window.NEPHRA_DATA, M = D.management;
+  const line = (k, v, h) => (
+    <div key={k} style={{ display: "flex", gap: 16, alignItems: "baseline", padding: "14px 0", borderTop: "1px solid rgba(255,255,255,.12)", flexWrap: "wrap" }}>
+      <span style={{ ...mono(10, { letterSpacing: "0.2em" }), color: "var(--ink-400)", width: 100, flexShrink: 0 }}>{k}</span>
+      {h ? <a href={h} target={h.startsWith("http") ? "_blank" : undefined} rel="noreferrer" style={{ font: "var(--text-body)", fontSize: 18, fontWeight: 500, color: "#fff", textDecoration: "none", overflowWrap: "anywhere" }}>{v} <span style={{ color: "var(--lilac-300)" }}>→</span></a> : <span style={{ font: "var(--text-body)", fontSize: 18, fontWeight: 500 }}>{v}</span>}
+    </div>
+  );
+  return (
+    <section style={{ padding: pad, background: "var(--ink-950)", color: "#fff", position: "relative", overflow: "hidden" }}>
+      <img src={PH("press-houndstooth")} alt="" style={{ position: "absolute", right: 0, top: 0, height: "100%", width: "min(50%,680px)", objectFit: "cover", objectPosition: "50% 20%", opacity: 0.45, WebkitMaskImage: "linear-gradient(90deg,transparent,#000 75%)", maskImage: "linear-gradient(90deg,transparent,#000 75%)" }} />
+      <div style={{ position: "absolute", inset: "-30% auto auto -10%", width: "60%", height: "120%", background: "radial-gradient(circle at 40% 40%, rgba(124,77,255,0.4), transparent 65%)", pointerEvents: "none" }} />
+      <div style={{ ...wrap, position: "relative" }}>
+        <Head dark index="07" kicker="Contact" title="Let's build a night." sub="Booking enquiries, promo, press, and one-off concepts. Replies within 48 hours." />
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,340px),1fr))", gap: "clamp(32px,5vw,72px)", maxWidth: 900 }}>
+          <div>
+            <div style={{ ...mono(11, { fontWeight: 700 }), marginBottom: 10, ...gradText("var(--grad-signature)") }}>● Direct</div>
+            {D.contact.map(([k, v, h]) => line(k, v, h))}
+          </div>
+          <div>
+            <div style={{ ...mono(11, { fontWeight: 700 }), marginBottom: 10, ...gradText("var(--grad-signature)") }}>● {M.role}</div>
+            {line("Manager", M.name)}
+            {line("Phone", M.phone, M.tel)}
+            <div style={{ ...mono(11, { fontWeight: 700 }), margin: "34px 0 10px", ...gradText("var(--grad-signature)") }}>● Socials</div>
+            {D.socials.map((s) => line(s.k, s.v, s.url))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+Object.assign(window, { PressKit, Social, Contact });

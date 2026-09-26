@@ -1,0 +1,92 @@
+/* ============================================================
+   NEPHRA · COLOR TOKENS
+   Light-first, editorial palette. Near-black editorial ink on
+   paper-white, lifted by a violet→magenta glow and four
+   genre-coded gradients (Disco, Sunset, House, Tech House).
+   ============================================================ */
+:root {
+  /* ---- Neutral ink & paper ------------------------------- */
+  --ink-950: #08080B;   /* deepest — hero blacks */
+  --ink-900: #0E0E12;   /* primary text / fader knob black */
+  --ink-800: #17171D;
+  --ink-700: #2A2A33;   /* strong secondary text */
+  --ink-500: #6B6B78;   /* muted / captions */
+  --ink-400: #9A9AA6;
+  --ink-300: #C4C4CE;   /* hairline on light */
+  --ink-200: #E4E1EA;
+  --ink-100: #F2EEF6;
+
+  --paper:      #FFFFFF; /* base surface */
+  --paper-tint: #FBF7FE; /* faint lilac paper */
+  --paper-warm: #FFF6FB; /* faint pink paper (photo backdrop echo) */
+
+  /* ---- Lilac / glow scale (the purple radial motif) ------ */
+  --lilac-50:  #F6EEFF;
+  --lilac-100: #ECDCFF;
+  --lilac-200: #DcC1FF;
+  --lilac-300: #C79CFF;
+  --lilac-400: #B07DFF;
+
+  /* ---- Brand hues (sampled from the wordmark gradients) -- */
+  --violet:      #7C4DFF;  /* PRIMARY brand accent */
+  --violet-deep: #5B2EE0;  /* pressed / deep */
+  --violet-soft: #A47CFF;
+  --magenta:     #FF3DA6;  /* hot pink */
+  --pink:        #FF4FD8;  /* disco pink */
+  --rose:        #FF2D72;  /* sunset rose */
+  --orange:      #FF7F3F;  /* sunset orange */
+  --gold:        #FFD24A;  /* disco / sunset gold */
+  --cyan:        #22E0FF;  /* house cyan */
+  --teal:        #7FFFE4;  /* tech-house teal */
+  --blue:        #6C8BFF;  /* house blue */
+
+  /* photo backdrop pink (studio seamless) */
+  --backdrop-pink: #FFCAED;
+
+  /* ---- Genre gradients (named, verbatim from logo set) --- */
+  --grad-disco:     linear-gradient(90deg, #FF4FD8 0%, #B06BFE 52%, #FFD24A 100%); /* @kind color */
+  --grad-sunset:    linear-gradient(90deg, #FF2D72 0%, #FF7F3F 52%, #FFD166 100%); /* @kind color */
+  --grad-house:     linear-gradient(90deg, #22E0FF 0%, #6C8BFF 38%, #E044BA 72%, #FF3DA6 100%); /* @kind color */
+  --grad-techhouse: linear-gradient(90deg, #7FFFE4 0%, #6FE4EA 40%, #7C4DFF 100%); /* @kind color */
+  /* signature brand gradient — the pink→violet spine common to all */
+  --grad-signature: linear-gradient(90deg, #FF4FD8 0%, #7C4DFF 100%); /* @kind color */
+  /* soft page glow used behind hero content */
+  --glow-violet: radial-gradient(circle at 50% 45%, rgba(176,125,255,0.55) 0%, rgba(176,125,255,0.18) 42%, rgba(176,125,255,0) 70%); /* @kind color */
+
+  /* ---- Semantic status (kept minimal, brand-tinted) ------ */
+  --success: #17B586;
+  --warning: #F5A524;
+  --danger:  #FF2D72;
+  --info:    #6C8BFF;
+
+  /* ============================================================
+     SEMANTIC ALIASES — reference these in components/UIs
+     ============================================================ */
+  --text-primary:    var(--ink-900);
+  --text-secondary:  var(--ink-500);
+  --text-tertiary:   var(--ink-400);
+  --text-inverse:    #FFFFFF;
+  --text-accent:     var(--violet);
+  --text-on-accent:  #FFFFFF;
+
+  --surface-page:    var(--paper);
+  --surface-raised:  #FFFFFF;
+  --surface-tint:    var(--paper-tint);
+  --surface-inverse: var(--ink-900);
+  --surface-sunken:  var(--lilac-50);
+
+  --border-subtle:   var(--ink-200);
+  --border-strong:   var(--ink-900);
+  --border-accent:   var(--violet);
+
+  --accent:          var(--violet);
+  --accent-hover:    #6A3AF5;
+  --accent-pressed:  var(--violet-deep);
+  --accent-contrast: #FFFFFF;
+
+  --focus-ring:      color-mix(in srgb, var(--violet) 55%, transparent);
+
+  /* link defaults */
+  --link:       var(--violet);
+  --link-hover: var(--violet-deep);
+}

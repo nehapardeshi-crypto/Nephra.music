@@ -1,0 +1,12 @@
+/* ============================================================
+   NEPHRA · WEBFONTS
+   NOTE: The original press-deck fonts were not supplied as files.
+   These are the closest Google Fonts substitutes (flagged in
+   readme.md → VISUAL FOUNDATIONS). Swap in licensed originals
+   here if/when provided.
+     · Bodoni Moda → editorial Didone display
+     · Newsreader  → readable body serif
+     · Space Mono  → tracked uppercase labels / metadata
+   The "nephra" wordmark is bespoke art, not a webfont.
+   ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..700&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..500&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');

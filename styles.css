@@ -1,0 +1,9 @@
+/* ============================================================
+   NEPHRA DESIGN SYSTEM — global entry point.
+   Consumers link THIS file only. Import order matters:
+   fonts → tokens → (components style via CSS vars, no global CSS).
+   ============================================================ */
+@import url("tokens/fonts.css");
+@import url("tokens/colors.css");
+@import url("tokens/typography.css");
+@import url("tokens/layout.css");
