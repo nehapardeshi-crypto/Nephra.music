@@ -4,7 +4,7 @@ frontend:
     build:
       commands:
         - mkdir -p dist
-        - cp -r index.html styles.css assets js tokens dist/
+        - cp -r index.html styles.css sitemap.xml robots.txt assets js tokens dist/
   artifacts:
     baseDirectory: dist
     files:
