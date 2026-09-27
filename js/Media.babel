@@ -139,10 +139,15 @@ function Shows({ go }) {
         )}
         <div style={{ borderTop: "1.5px solid var(--ink-900)" }}>
           {window.NEPHRA_DATA.highlights.map((s, i) => (
-            <div key={s.name} style={{ display: "grid", gridTemplateColumns: "auto minmax(0,1fr) auto", gap: "clamp(16px,3vw,40px)", alignItems: "center", padding: "clamp(18px,2.4vw,28px) 0", borderBottom: "1px solid var(--ink-200)" }}>
-              <span style={{ ...mono(11), color: "var(--ink-400)", width: 36 }}>{String(i + 1).padStart(2, "0")}</span>
-              <span style={{ fontFamily: "var(--font-display)", fontWeight: 600, fontSize: "clamp(1.8rem,4.4vw,3.6rem)", lineHeight: 1, letterSpacing: "-0.02em", ...gradText(TONE(s.tone)), paddingBottom: 4 }}>{s.name}</span>
-              <span style={{ ...mono(10.5, { letterSpacing: "0.14em" }), color: "var(--ink-500)", textAlign: "right", lineHeight: 1.6 }}>{s.place}<br />{s.kind}</span>
+            <div key={s.name} style={{ display: "flex", flexWrap: "wrap", alignItems: "center", rowGap: 10, columnGap: "clamp(16px,3vw,40px)", padding: "clamp(18px,2.4vw,28px) 0", borderBottom: "1px solid var(--ink-200)" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "clamp(10px,2vw,16px)", flex: "1 0 220px", minWidth: 220 }}>
+                <span style={{ width: "clamp(34px,6vw,52px)", height: "clamp(34px,6vw,52px)", borderRadius: "var(--radius-md)", background: "var(--surface-tint)", border: "1px solid var(--ink-100)", display: "flex", alignItems: "center", justifyContent: "center", padding: 7, flexShrink: 0 }}>
+                  <img src={s.logo} alt={`${s.name} logo`} loading="lazy" style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain" }} />
+                </span>
+                <span style={{ ...mono(11), color: "var(--ink-400)", flexShrink: 0 }}>{String(i + 1).padStart(2, "0")}</span>
+                <span style={{ fontFamily: "var(--font-display)", fontWeight: 600, fontSize: "clamp(1.5rem,4vw,3.6rem)", lineHeight: 1.05, letterSpacing: "-0.02em", ...gradText(TONE(s.tone)), paddingBottom: 4, flex: "1 1 auto", minWidth: 0 }}>{s.name}</span>
+              </div>
+              <span style={{ ...mono(10.5, { letterSpacing: "0.14em" }), color: "var(--ink-500)", textAlign: "right", lineHeight: 1.6, marginLeft: "auto" }}>{s.place}<br />{s.kind}</span>
             </div>
           ))}
         </div>
