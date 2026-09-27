@@ -39,8 +39,8 @@ window.NEPHRA_DATA = {
     { date: "Sun · 01 Feb 2026", title: "BLOT! x NEPHRA", venue: "Quake Arena", url: "https://ravist.in/hyd/event/6978e9da92f62253a2e37a0e" },
   ],
   releases: [
-    { title: "Make Me Feel", spotify: "4TFKO5e0Uv4rmYmhMv1uaF" },
-    { title: "If You Want", spotify: "1Z0Rljb3pYRMHb4MPvIcXM" },
+    { title: "Make Me Feel", spotify: "1Z0Rljb3pYRMHb4MPvIcXM" },
+    { title: "If You Want", spotify: "4TFKO5e0Uv4rmYmhMv1uaF" },
   ],
   releaseMeta: { label: "Natural Rhythm", country: "Romania", comp: "ADE Game of Tones", year: "2025" },
   pressLinks: [
