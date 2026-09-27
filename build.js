@@ -59,19 +59,27 @@ let html = fs.readFileSync(path.join(ROOT, "index.html"), "utf8");
 
 html = html.replace(
   /<script src="https:\/\/unpkg\.com\/react@18\.3\.1\/umd\/react\.development\.js"[^>]*><\/script>/,
-  '<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" integrity="sha384-DGyLxAyjq0f9SPpVevD6IgztCFlnMF6oW/XQGmfe+IsZ8TqEiDrcHkMLKI6fiB/Z" crossorigin="anonymous"></script>'
+  '<script defer src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" integrity="sha384-DGyLxAyjq0f9SPpVevD6IgztCFlnMF6oW/XQGmfe+IsZ8TqEiDrcHkMLKI6fiB/Z" crossorigin="anonymous"></script>'
 );
 html = html.replace(
   /<script src="https:\/\/unpkg\.com\/react-dom@18\.3\.1\/umd\/react-dom\.development\.js"[^>]*><\/script>/,
-  '<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" integrity="sha384-gTGxhz21lVGYNMcdJOyq01Edg0jhn/c22nsx0kyqP0TxaV5WVdsSH1fSDUf5YJj1" crossorigin="anonymous"></script>'
+  '<script defer src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" integrity="sha384-gTGxhz21lVGYNMcdJOyq01Edg0jhn/c22nsx0kyqP0TxaV5WVdsSH1fSDUf5YJj1" crossorigin="anonymous"></script>'
 );
 html = html.replace(/<script src="https:\/\/unpkg\.com\/@babel\/standalone[^>]*><\/script>\n/, "");
-html = html.replace(/<script type="text\/babel" src="(\.\/js\/[^"]+)\.babel"><\/script>/g, '<script src="$1.js"></script>');
+// Every local script becomes `defer`, in document order, so downloads happen in
+// parallel instead of each one blocking the next (and blocking first paint).
+html = html.replace(/<script src="(\.\/js\/[^"]+\.js)">/g, '<script defer src="$1">');
+html = html.replace(/<script type="text\/babel" src="(\.\/js\/[^"]+)\.babel"><\/script>/g, '<script defer src="$1.js"></script>');
 
+// The inline App bootstrap (kept as JSX in source so the tweaks-panel EDITMODE
+// marker stays editable) becomes its own deferred file rather than an inline
+// <script>, so it downloads alongside everything else instead of only starting
+// after every prior script has finished loading and running.
 const inlineMatch = html.match(/<script type="text\/babel">\n([\s\S]*?)\n<\/script>\n<\/body>/);
 if (!inlineMatch) throw new Error("Could not find inline App script in index.html");
 const compiledInline = compile(inlineMatch[1], "index.html-inline.jsx");
-html = html.replace(inlineMatch[0], `<script>\n${compiledInline}\n</script>\n</body>`);
+fs.writeFileSync(path.join(DIST, "js/app.js"), compiledInline);
+html = html.replace(inlineMatch[0], '<script defer src="./js/app.js"></script>\n</body>');
 
 fs.writeFileSync(path.join(DIST, "index.html"), html);
 console.log("Built dist/ (JSX precompiled, React production builds, no runtime Babel).");

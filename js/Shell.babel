@@ -79,7 +79,7 @@ function Home({ go, grad, palette, setPalette, photo }) {
           </div>
           <div style={{ position: "relative", maxWidth: 500, justifySelf: "center", width: "100%" }}>
             <div style={{ position: "absolute", inset: "-6% -6% -6% 8%", borderRadius: "var(--radius-xl)", background: grad, opacity: 0.9, transition: "background var(--dur-med)" }} />
-            <img src={photo} alt="Nephra" style={{ position: "relative", width: "100%", aspectRatio: "4/5", objectFit: "cover", objectPosition: "50% 30%", borderRadius: "var(--radius-xl)", display: "block", boxShadow: "var(--shadow-lg)" }} />
+            <img src={photo} alt="Nephra" fetchPriority="high" style={{ position: "relative", width: "100%", aspectRatio: "4/5", objectFit: "cover", objectPosition: "50% 30%", borderRadius: "var(--radius-xl)", display: "block", boxShadow: "var(--shadow-lg)" }} />
           </div>
         </div>
         <div style={{ ...wrap, marginTop: "clamp(40px,5vw,64px)" }}><Fader value={{ disco: 0.2, house: 0.45, techhouse: 0.72, sunset: 0.9 }[palette] ?? 0.5} /></div>
@@ -88,7 +88,7 @@ function Home({ go, grad, palette, setPalette, photo }) {
       <section aria-label="Gallery" style={{ padding: "0 0 clamp(48px,6vw,88px)", overflow: "hidden" }}>
         <div style={{ display: "flex", gap: 14, overflowX: "auto", padding: "0 clamp(20px,5vw,56px)", scrollbarWidth: "none", scrollSnapType: "x mandatory" }}>
           {D.photos.map(([f, , l]) => (
-            <img key={f} src={PH(f)} alt={l} style={{ flex: "0 0 auto", height: "clamp(240px,30vw,380px)", aspectRatio: "3/4", objectFit: "cover", objectPosition: "50% 25%", borderRadius: "var(--radius-lg)", scrollSnapAlign: "start" }} />
+            <img key={f} src={PH(f)} alt={l} loading="lazy" decoding="async" style={{ flex: "0 0 auto", height: "clamp(240px,30vw,380px)", aspectRatio: "3/4", objectFit: "cover", objectPosition: "50% 25%", borderRadius: "var(--radius-lg)", scrollSnapAlign: "start" }} />
           ))}
         </div>
       </section>

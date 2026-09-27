@@ -88,7 +88,7 @@ function Index({ go, grad, photo }) {
         </nav>
         <div style={{ position: "relative", maxWidth: 440, width: "100%", justifySelf: "end" }}>
           <div style={{ position: "absolute", inset: "-5% -5% -5% 8%", borderRadius: "var(--radius-xl)", background: grad, opacity: 0.9 }}></div>
-          <img src={photo} alt="Nephra" style={{ position: "relative", display: "block", width: "100%", aspectRatio: "4/5", objectFit: "cover", objectPosition: "50% 25%", borderRadius: "var(--radius-xl)", boxShadow: "var(--shadow-lg)" }} />
+          <img src={photo} alt="Nephra" fetchPriority="high" style={{ position: "relative", display: "block", width: "100%", aspectRatio: "4/5", objectFit: "cover", objectPosition: "50% 25%", borderRadius: "var(--radius-xl)", boxShadow: "var(--shadow-lg)" }} />
         </div>
       </div>
     </section>
