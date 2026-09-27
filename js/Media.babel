@@ -138,18 +138,23 @@ function Shows({ go }) {
           </div>
         )}
         <div style={{ borderTop: "1.5px solid var(--ink-900)" }}>
-          {window.NEPHRA_DATA.highlights.map((s, i) => (
-            <div key={s.name} style={{ display: "flex", flexWrap: "wrap", alignItems: "center", rowGap: 10, columnGap: "clamp(16px,3vw,40px)", padding: "clamp(18px,2.4vw,28px) 0", borderBottom: "1px solid var(--ink-200)" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "clamp(10px,2vw,16px)", flex: "1 0 220px", minWidth: 220 }}>
-                <span style={{ width: "clamp(34px,6vw,52px)", height: "clamp(34px,6vw,52px)", borderRadius: "var(--radius-md)", background: "var(--surface-tint)", border: "1px solid var(--ink-100)", display: "flex", alignItems: "center", justifyContent: "center", padding: 7, flexShrink: 0 }}>
-                  <img src={s.logo} alt={`${s.name} logo`} loading="lazy" style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain" }} />
-                </span>
-                <span style={{ ...mono(11), color: "var(--ink-400)", flexShrink: 0 }}>{String(i + 1).padStart(2, "0")}</span>
-                <span style={{ fontFamily: "var(--font-display)", fontWeight: 600, fontSize: "clamp(1.5rem,4vw,3.6rem)", lineHeight: 1.05, letterSpacing: "-0.02em", ...gradText(TONE(s.tone)), paddingBottom: 4, flex: "1 1 auto", minWidth: 0 }}>{s.name}</span>
-              </div>
-              <span style={{ ...mono(10.5, { letterSpacing: "0.14em" }), color: "var(--ink-500)", textAlign: "right", lineHeight: 1.6, marginLeft: "auto" }}>{s.place}<br />{s.kind}</span>
-            </div>
-          ))}
+          {window.NEPHRA_DATA.highlights.map((s, i) => {
+            const Row = s.url ? "a" : "div";
+            const rowProps = s.url ? { href: s.url, target: "_blank", rel: "noreferrer" } : {};
+            return (
+              <Row key={s.name} {...rowProps} style={{ display: "flex", flexWrap: "wrap", alignItems: "center", rowGap: 10, columnGap: "clamp(16px,3vw,40px)", padding: "clamp(18px,2.4vw,28px) 0", borderBottom: "1px solid var(--ink-200)", textDecoration: "none", color: "inherit" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "clamp(10px,2vw,16px)", flex: "1 0 220px", minWidth: 220 }}>
+                  <span style={{ width: "clamp(34px,6vw,52px)", height: "clamp(34px,6vw,52px)", borderRadius: "var(--radius-md)", background: "var(--surface-tint)", border: "1px solid var(--ink-100)", display: "flex", alignItems: "center", justifyContent: "center", padding: 7, flexShrink: 0 }}>
+                    <img src={s.logo} alt={`${s.name} logo`} loading="lazy" style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain" }} />
+                  </span>
+                  <span style={{ ...mono(11), color: "var(--ink-400)", flexShrink: 0 }}>{String(i + 1).padStart(2, "0")}</span>
+                  <span style={{ fontFamily: "var(--font-display)", fontWeight: 600, fontSize: "clamp(1.5rem,4vw,3.6rem)", lineHeight: 1.05, letterSpacing: "-0.02em", ...gradText(TONE(s.tone)), paddingBottom: 4, flex: "1 1 auto", minWidth: 0 }}>{s.name}</span>
+                </div>
+                <span style={{ ...mono(10.5, { letterSpacing: "0.14em" }), color: "var(--ink-500)", textAlign: "right", lineHeight: 1.6, marginLeft: "auto" }}>{s.place}<br />{s.kind}</span>
+                {s.url && <span style={{ ...mono(11, { fontWeight: 700 }), flexShrink: 0 }}>→</span>}
+              </Row>
+            );
+          })}
         </div>
         <div style={{ marginTop: 36, display: "flex", gap: 16, alignItems: "center", flexWrap: "wrap", padding: "22px 26px", borderRadius: "var(--radius-lg)", background: "var(--surface-tint)" }}>
           <span style={{ ...mono(11, { fontWeight: 700 }), flex: 1, minWidth: 220 }}>{upcoming.length ? "● Want Nephra at your venue?" : `● Upcoming ${new Date().getFullYear()} dates — TBA`}</span>

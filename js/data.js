@@ -20,7 +20,7 @@ window.NEPHRA_DATA = {
     { g: "▶", title: "SoundCloud", meta: "Mixes & Edits", body: "Mixes, edits and originals.", tone: "sunset", url: "https://soundcloud.com/nephraa", cta: "Open SoundCloud" },
   ],
   highlights: [
-    { name: "Magnetic Fields", place: "Rajasthan, India", kind: "Festival", tone: "sunset", logo: "./assets/logos/highlights/magnetic-fields.png" },
+    { name: "Magnetic Fields", place: "Rajasthan, India", kind: "Festival", tone: "sunset", logo: "./assets/logos/highlights/magnetic-fields.png", url: "https://2023.magneticfields.in/artists/nephra/" },
     { name: "Amsterdam Dance Event", place: "Amsterdam, NL", kind: "Conference & Festival", tone: "house", logo: "./assets/logos/highlights/ade.png" },
     { name: "Sunburn Festival", place: "Goa, India", kind: "Festival", tone: "disco", logo: "./assets/logos/highlights/sunburn.svg" },
   ],
