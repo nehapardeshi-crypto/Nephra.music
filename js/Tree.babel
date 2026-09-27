@@ -58,12 +58,8 @@ function Tree({ go, grad }) {
 function TopBar({ grad, crumb, go }) {
   return (
     <header style={{ position: "sticky", top: 0, zIndex: 100, background: "var(--ink-950)", color: "#fff" }}>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr auto 1fr", alignItems: "center", gap: 16, padding: "14px clamp(20px,4vw,48px)" }}>
-        <span style={{ ...mono(10.5), color: "var(--ink-400)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-          <a href="#/" onClick={(e) => { e.preventDefault(); go(""); }} style={{ color: crumb ? "var(--ink-300)" : "#fff", textDecoration: "none" }}>Home/</a>{crumb && <span style={{ color: "#fff" }}>{crumb}/</span>}
-        </span>
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", padding: "14px clamp(20px,4vw,48px)" }}>
         <a href="#/" onClick={(e) => { e.preventDefault(); go(""); }} style={{ display: "flex" }}><img src="./assets/logos/nephra-white.png" alt="nephra" width={103} height={30} style={{ height: 30, width: "auto" }} /></a>
-        <span style={{ ...mono(10.5, { fontWeight: 700 }), color: "#fff", textAlign: "right" }}>House & Techno</span>
       </div>
       <div style={{ height: 3, background: grad }}></div>
     </header>
