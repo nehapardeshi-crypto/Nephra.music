@@ -1,3 +1,4 @@
 dist/
+node_modules/
 sync/function.zip
 sync/out.json

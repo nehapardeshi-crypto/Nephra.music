@@ -1,13 +1,16 @@
 version: 1
 frontend:
   phases:
+    preBuild:
+      commands:
+        - npm ci
     build:
       commands:
-        - mkdir -p dist
-        - cp -r index.html styles.css sitemap.xml robots.txt assets js tokens dist/
+        - node build.js
   artifacts:
     baseDirectory: dist
     files:
       - '**/*'
   cache:
-    paths: []
+    paths:
+      - node_modules/**/*

@@ -1,0 +1,7 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    { "name": "site", "runtimeExecutable": "python", "runtimeArgs": ["-m", "http.server", "5173"], "port": 5173 },
+    { "name": "dist", "runtimeExecutable": "python", "runtimeArgs": ["-m", "http.server", "5174", "--directory", "dist"], "port": 5174 }
+  ]
+}

@@ -62,7 +62,7 @@ function TopBar({ grad, crumb, go }) {
         <span style={{ ...mono(10.5), color: "var(--ink-400)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
           <a href="#/" onClick={(e) => { e.preventDefault(); go(""); }} style={{ color: crumb ? "var(--ink-300)" : "#fff", textDecoration: "none" }}>Home/</a>{crumb && <span style={{ color: "#fff" }}>{crumb}/</span>}
         </span>
-        <a href="#/" onClick={(e) => { e.preventDefault(); go(""); }} style={{ display: "flex" }}><img src="./assets/logos/nephra-white.png" alt="nephra" style={{ height: 30 }} /></a>
+        <a href="#/" onClick={(e) => { e.preventDefault(); go(""); }} style={{ display: "flex" }}><img src="./assets/logos/nephra-white.png" alt="nephra" width={103} height={30} style={{ height: 30, width: "auto" }} /></a>
         <span style={{ ...mono(10.5, { fontWeight: 700 }), color: "#fff", textAlign: "right" }}>House & Techno</span>
       </div>
       <div style={{ height: 3, background: grad }}></div>

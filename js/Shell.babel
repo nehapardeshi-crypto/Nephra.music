@@ -35,7 +35,7 @@ function Header({ active, go, grad, tabStyle }) {
   return (
     <header style={{ position: "sticky", top: 0, zIndex: 100, background: "rgba(255,255,255,0.86)", backdropFilter: "saturate(1.4) blur(14px)", WebkitBackdropFilter: "saturate(1.4) blur(14px)", borderBottom: "1px solid var(--ink-100)" }}>
       <div style={{ ...wrap, display: "flex", alignItems: "center", gap: "clamp(16px,3vw,40px)", padding: "0 clamp(20px,5vw,56px)" }}>
-        <a href="#home" onClick={(e) => { e.preventDefault(); go("home"); }} style={{ display: "flex", flexShrink: 0 }}><img src="./assets/logos/nephra-black.png" alt="nephra" style={{ height: 34 }} /></a>
+        <a href="#home" onClick={(e) => { e.preventDefault(); go("home"); }} style={{ display: "flex", flexShrink: 0 }}><img src="./assets/logos/nephra-black.png" alt="nephra" width={117} height={34} style={{ height: 34, width: "auto" }} /></a>
         <nav style={{ flex: 1, display: "flex", gap: tabStyle === "pill" ? 4 : "clamp(14px,2vw,28px)", overflowX: "auto", scrollbarWidth: "none", justifyContent: "flex-end", padding: "12px 0" }}>
           {TABS.slice(1).map(([k, l]) => {
             const on = active === k;
@@ -115,7 +115,7 @@ function Footer() {
       <div style={wrap}>
         <Fader value={0.5} gradient knob />
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 28, flexWrap: "wrap", gap: 16 }}>
-          <img src="./assets/logos/nephra-white.png" alt="nephra" style={{ height: 22 }} />
+          <img src="./assets/logos/nephra-white.png" alt="nephra" width={76} height={22} style={{ height: 22, width: "auto" }} />
           <span style={{ ...mono(10, { letterSpacing: "0.16em" }) }}>● Nephra · nephra.music · 2026</span>
         </div>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 24, paddingTop: 20, borderTop: "1px solid var(--ink-800)", flexWrap: "wrap", gap: 12 }}>

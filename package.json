@@ -1,0 +1,16 @@
+{
+  "name": "nephra-site",
+  "version": "1.0.0",
+  "description": "Static one-page site for NEPHRA (V2 — directory index + destination pages).",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.29.7",
+    "@babel/preset-react": "^7.29.7"
+  }
+}
