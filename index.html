@@ -10,7 +10,16 @@
 <meta property="og:image" content="./assets/photos/press-pink-headphones.jpg">
 <link rel="icon" href="./assets/logos/nephra-black.png">
 <link rel="stylesheet" href="./styles.css">
-<style>html,body{margin:0;background:var(--surface-tint)}a{color:var(--link)}a:hover{color:var(--link-hover)}::selection{background:var(--lilac-200)}div::-webkit-scrollbar{display:none}@keyframes nfade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}</style>
+<style>html,body{margin:0;background:var(--surface-tint)}a{color:var(--link)}a:hover{color:var(--link-hover)}::selection{background:var(--lilac-200)}div::-webkit-scrollbar{display:none}@keyframes nfade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+html.dark{color-scheme:dark;--ink-950:#120818;--ink-900:#F6EEFF;--ink-800:#E6DAF2;--ink-700:#D6C8E6;--ink-500:#B3A3C6;--ink-400:#9886AE;--ink-300:#6A5582;--ink-200:#3A2650;--ink-100:#2E1B40;--paper:#1A0D24;--paper-tint:#21112E;--surface-page:#1A0D24;--surface-tint:#21112E;--surface-raised:#2A1638;--violet:#B07DFF;--link:#C79CFF;--link-hover:#ECDCFF;--glow-violet:radial-gradient(farthest-side at 60% 45%,rgba(176,125,255,.38) 0%,rgba(255,79,216,.1) 55%,rgba(176,125,255,0) 100%)}
+html.dark [style*="background: var(--ink-900)"],html.dark [style*="background-color: var(--ink-900)"]{background:#2E1840!important}
+html.dark [style*="background: rgb(255, 255, 255)"]:not([style*="aspect-ratio"]){background:#2A1638!important}
+html.dark [style*="solid var(--ink-800)"],html.dark [style*="solid var(--ink-700)"]{border-color:#3A2650!important}
+html.dark ::selection{background:#5B2EE0}
+.theme-toggle{position:fixed;right:clamp(12px,3vw,40px);top:12px;z-index:300;display:flex;gap:2px;padding:4px;border-radius:999px;background:rgba(18,8,24,.82);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.14);box-shadow:0 8px 24px rgba(0,0,0,.3)}
+.theme-toggle button{all:unset;cursor:pointer;font-family:var(--font-mono);font-weight:700;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;padding:7px 11px;border-radius:999px;color:#C4B5D6;transition:all .2s}
+.theme-toggle button[aria-pressed="true"]{background:linear-gradient(90deg,#FF4FD8,#7C4DFF);color:#fff}.theme-toggle~*{}</style>
+<script>document.documentElement.classList.toggle("dark",(localStorage.getItem("nephra-theme")||"dark")==="dark")</script>
 </head>
 <body>
 <div id="root"></div>
@@ -25,14 +34,16 @@
 <script type="text/babel" src="./js/Kit.babel"></script>
 <script type="text/babel" src="./js/Tree.babel"></script>
 <script type="text/babel">
-const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{"palette":"sunset","heroPhoto":"press-pink-headphones"}/*EDITMODE-END*/;
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{"palette":"signature","heroPhoto":"press-pink-headphones"}/*EDITMODE-END*/;
 function App() {
   const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
   const read = () => { const h = location.hash.replace(/^#\/?/, ""); return LABEL[h] ? h : ""; };
   const [page, setPage] = React.useState(read);
   React.useEffect(() => { const f = () => setPage(read()); addEventListener("hashchange", f); return () => removeEventListener("hashchange", f); }, []);
   const go = (k) => { location.hash = "/" + k; setPage(k); window.scrollTo(0, 0); };
-  const grad = TONE(t.palette);
+  const grad = TONE("signature");
+  const [theme, setTheme] = React.useState(() => localStorage.getItem("nephra-theme") || "dark");
+  React.useEffect(() => { document.documentElement.classList.toggle("dark", theme === "dark"); localStorage.setItem("nephra-theme", theme); }, [theme]);
   const views = {
     about: <Home go={(k) => go(LABEL[k] ? k : "")} grad={grad} palette={t.palette} setPalette={(v) => setTweak("palette", v)} photo={PH(t.heroPhoto)} />,
     videos: <Videos />, releases: <Releases />, playlists: <Playlists />, shows: <Shows go={go} />, press: <PressKit />, contact: <Contact />, curations: <Curations />,
@@ -46,9 +57,12 @@ function App() {
         <main data-screen-label="Index"><Index go={go} grad={grad} photo={PH(t.heroPhoto)} /></main>
       )}
       <Footer />
+      <div className="theme-toggle" role="group" aria-label="Colour theme">
+        <button aria-pressed={theme === "dark"} onClick={() => setTheme("dark")}>● Dark</button>
+        <button aria-pressed={theme === "light"} onClick={() => setTheme("light")}>○ Light</button>
+      </div>
       <TweaksPanel>
         <TweakSection label="Brand" />
-        <TweakSelect label="Spectrum" value={t.palette} options={[{value:"disco",label:"Disco"},{value:"house",label:"House"},{value:"techhouse",label:"Tech House"},{value:"sunset",label:"Sunset"},{value:"signature",label:"Signature"}]} onChange={(v) => setTweak("palette", v)} />
         <TweakSelect label="Photo" value={t.heroPhoto} options={window.NEPHRA_DATA.photos.map(([f,,l]) => ({ value: f, label: l }))} onChange={(v) => setTweak("heroPhoto", v)} />
       </TweaksPanel>
     </div>

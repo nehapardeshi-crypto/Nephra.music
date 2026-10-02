@@ -1,9 +1,9 @@
 # nephra.music
 
-Static one-page site for NEPHRA (V2 — directory index + destination pages).
+Static one-page site for NEPHRA (V3 — dark aubergine default with light/dark toggle, directory index + destination pages).
 
 ## Structure
-- `index.html` — entry; hash routes `#/videos`, `#/releases`, `#/playlists`, `#/shows`, `#/press`, `#/contact`, `#/about`
+- `index.html` — entry; hash routes `#/videos`, `#/releases`, `#/playlists`, `#/curations`, `#/shows`, `#/press`, `#/contact`, `#/about`
 - `js/data.js` — **all editable content** (videos, playlists, past events, releases, press, rider, socials)
 - `js/*.babel` — React views (compiled in-browser by Babel standalone)
 - `js/ds-bundle.js` — NEPHRA design-system components

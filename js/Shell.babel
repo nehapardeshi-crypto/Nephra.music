@@ -5,7 +5,7 @@ const PALETTES = { disco: ["Disco", "var(--grad-disco)"], house: ["House", "var(
 const TONE = (t) => (PALETTES[t] || PALETTES.signature)[1];
 const TABS = [["home", "Home"], ["videos", "Videos"], ["playlists", "Playlists"], ["shows", "Shows"], ["releases", "Releases"], ["press", "Press Kit"], ["social", "Social"], ["contact", "Contact"]];
 const mono = (size = 11, extra = {}) => ({ fontFamily: "var(--font-mono)", fontSize: size, letterSpacing: "0.18em", textTransform: "uppercase", ...extra });
-const gradText = (g) => ({ backgroundImage: g, WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent" });
+const gradText = (g) => ({ backgroundImage: g, WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent", color: "transparent" });
 const wrap = { maxWidth: 1240, margin: "0 auto" };
 const pad = "clamp(56px,8vw,120px) clamp(20px,5vw,56px)";
 const PH = (f) => `./assets/photos/${f}.jpg`;
