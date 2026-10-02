@@ -25,3 +25,14 @@
 @media (prefers-reduced-motion: reduce) {
   .ravist-mark { animation: none; }
 }
+
+/* Footer rows: spread on desktop, centred stack on phones */
+.ft-row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+.ft-logo { height: 34px; width: auto; display: block; }
+@media (max-width: 640px) {
+  .ft-row { flex-direction: column; justify-content: center; text-align: center; gap: 14px; }
+  .ft-logo { height: 46px; }
+  footer { padding-bottom: 76px !important; }
+  html .theme-toggle { right: 10px; top: auto; bottom: 14px; padding: 3px; }
+  html .theme-toggle button { font-size: 9px; padding: 6px 8px; letter-spacing: .12em; }
+}
