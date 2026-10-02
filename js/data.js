@@ -16,6 +16,7 @@ window.NEPHRA_DATA = {
   playlists: [
     { g: "♯", title: "Frisky Radio", meta: "Radio Residency", body: "Artist page and archive of residency shows on Frisky.", tone: "techhouse", url: "https://frisky.fm/artist/nephra/27465", cta: "Listen on Frisky" },
     { g: "∞", title: "Pioneer DJ Radio", meta: "Co-Existence · May 2019", body: "Underground Sounds of India — a guest mix for Pioneer DJ Radio.", tone: "house", url: "https://www.mixcloud.com/PioneerDJRadio/nephra-co-existence-underground-sounds-of-india-may-2019/", cta: "Listen on Mixcloud" },
+    { g: "◉", title: "Boxout.fm Radio", meta: "Resident", body: "Resident shows on Boxout.fm — India's independent community radio.", tone: "signature", url: "https://boxout.fm/radio/residents/nephra", cta: "Listen on Boxout.fm" },
     { g: "✦", title: "Mixcloud", meta: "Radio & Studio Mixes", body: "The full archive of radio shows, Goldilocks sessions and studio mixes.", tone: "disco", url: "https://www.mixcloud.com/Nephra/", cta: "Open Mixcloud" },
     { g: "▶", title: "SoundCloud", meta: "Mixes & Edits", body: "Mixes, edits and originals.", tone: "sunset", url: "https://soundcloud.com/nephraa", cta: "Open SoundCloud" },
   ],
@@ -38,6 +39,13 @@ window.NEPHRA_DATA = {
     { date: "Sat · 28 Feb 2026", title: "Tales of Ibiza — Chasing the Sun to Moon", venue: "Akan", url: "https://ravist.in/hyd/event/699f04681fbf327af55046ec" },
     { date: "Sun · 01 Feb 2026", title: "BLOT! x NEPHRA", venue: "Quake Arena", url: "https://ravist.in/hyd/event/6978e9da92f62253a2e37a0e" },
   ],
+  // Base path for showreel + curation videos; point at an S3/CloudFront URL here to move them off the repo.
+  videoBase: "./assets/video/",
+  showreel: "nephra-showreel.mp4",
+  curations: {
+    kadamba: { title: "Kadamba Saturday Takeover", sub: "Global Underground Vibes", videos: ["kadamba-reel.mp4", "kadamba-reel-4.mp4"] },
+    goldilocks: { title: "Goldilocks", sub: "4 curated episodes of House & Disco", episodes: ["Daily Rituals", "EXT", "Warehouse81", "Imli Sarai"], media: { "Daily Rituals": "goldilocks-daily-rituals.mp4", "EXT": "goldilocks-ext.mp4", "Warehouse81": "goldilocks-warehouse81.mp4", "Imli Sarai": "goldilocks-imli-sarai.mp4" } },
+  },
   releases: [
     { title: "Make Me Feel", spotify: "1Z0Rljb3pYRMHb4MPvIcXM" },
     { title: "If You Want", spotify: "4TFKO5e0Uv4rmYmhMv1uaF" },

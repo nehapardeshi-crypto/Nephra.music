@@ -6,7 +6,7 @@
 <title>NEPHRA · DJ · Producer · Curator · House & Techno</title>
 <meta name="description" content="NEPHRA — Hyderabad-based DJ, producer and curator. House & Techno.">
 <meta property="og:title" content="NEPHRA · DJ · Producer · Curator">
-<meta property="og:description" content="House & Techno. Videos, releases, shows, press kit and booking.">
+<meta property="og:description" content="House & Techno. Videos, curations, releases, shows, press kit and booking.">
 <meta property="og:image" content="./assets/photos/press-pink-headphones.jpg">
 <link rel="icon" href="./assets/logos/nephra-black.png">
 <link rel="stylesheet" href="./styles.css">
@@ -35,7 +35,7 @@ function App() {
   const grad = TONE(t.palette);
   const views = {
     about: <Home go={(k) => go(LABEL[k] ? k : "")} grad={grad} palette={t.palette} setPalette={(v) => setTweak("palette", v)} photo={PH(t.heroPhoto)} />,
-    videos: <Videos />, releases: <Releases />, playlists: <Playlists />, shows: <Shows go={go} />, press: <PressKit />, contact: <Contact />,
+    videos: <Videos />, releases: <Releases />, playlists: <Playlists />, shows: <Shows go={go} />, press: <PressKit />, contact: <Contact />, curations: <Curations />,
   };
   return (
     <div>

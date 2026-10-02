@@ -1,13 +1,14 @@
 /* NEPHRA website V2 — directory-tree index + single-destination views. */
 const TREE = [
   { k: "about", l: "About" },
-  { k: "videos", l: "Videos" },
   { l: "Music", kids: [{ k: "releases", l: "Releases" }, { k: "playlists", l: "Playlists" }] },
+  { k: "curations", l: "Curations" },
+  { k: "videos", l: "Videos" },
   { k: "shows", l: "Shows" },
-  { k: "press", l: "Press Kit" },
-  { k: "contact", l: "Contact" },
-  { l: "Socials", kids: window.NEPHRA_DATA.socials.map((s) => ({ l: s.k, url: s.url })) },
   { l: "Selected Press", kids: window.NEPHRA_DATA.pressLinks },
+  { l: "Socials", kids: window.NEPHRA_DATA.socials.map((s) => ({ l: s.k, url: s.url })) },
+  { k: "contact", l: "Contact" },
+  { k: "press", l: "Press Kit" },
 ];
 const LABEL = {}; TREE.forEach((n) => { if (n.k) LABEL[n.k] = n.l; (n.kids || []).forEach((c) => c.k && (LABEL[c.k] = c.l)); });
 
@@ -38,7 +39,7 @@ function Node({ n, go, grad, depth, open, toggle }) {
 }
 
 function Tree({ go, grad }) {
-  const [open, setOpen] = React.useState({ Music: true });
+  const [open, setOpen] = React.useState(() => { const c = window.__openCat; window.__openCat = null; return c ? { [c]: true } : { Music: true }; });
   return (
     <ul style={{ margin: "0 0 0 10px", padding: 0 }}>
       {TREE.map((n, i) => (
@@ -107,7 +108,7 @@ function Crumbs({ go, cur, grad }) {
                 {i > 0 && <span style={{ fontFamily: "var(--font-mono)", color: "var(--ink-300)", fontSize: 18 }}>/</span>}
                 {last ? <span aria-current="page" style={{ ...base, ...gradText(grad) }}>{l}/</span>
                   : k !== null ? <a href={"#/" + k} onClick={(e) => { e.preventDefault(); go(k); }} style={{ ...base, color: "var(--ink-500)", padding: "6px 12px", border: "1px solid var(--ink-200)", borderRadius: 99, background: "#fff" }}>← {l}</a>
-                  : <span style={{ ...base, color: "var(--ink-400)" }}>{l}</span>}
+                  : <a href="#/" onClick={(e) => { e.preventDefault(); window.__openCat = l; go(""); }} title={"Back to " + l} style={{ ...base, color: "var(--ink-900)", padding: "6px 12px", border: "1.5px solid var(--ink-900)", borderRadius: 99, background: "#fff" }}>← {l}</a>}
               </li>
             );
           })}

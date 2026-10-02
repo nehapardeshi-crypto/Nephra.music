@@ -23,14 +23,61 @@ function VideoTile({ v, big, n }) {
   );
 }
 
+function Curations() {
+  const { curations: { kadamba: k, goldilocks: g }, videoBase: vb } = window.NEPHRA_DATA;
+  return (
+    <div>
+      <section id="cur-goldilocks" style={{ padding: pad, scrollMarginTop: 80 }}>
+        <div style={wrap}>
+          <Head index="01" kicker="Curations" title={g.title} sub={g.sub} />
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,240px),1fr))", gap: 18 }}>
+            {g.episodes.map((e, i) => (
+              <div key={e} style={{ background: "#fff", border: "1px solid var(--ink-100)", borderRadius: "var(--radius-lg)", overflow: "hidden", boxShadow: "var(--shadow-sm)" }}>
+                <div style={{ aspectRatio: "4/5", background: g.media[e] ? "var(--ink-900)" : "var(--surface-tint)" }}>
+                  {g.media[e] ? <video src={vb + g.media[e]} controls playsInline preload="metadata" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}></video>
+                    : <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", ...mono(10), color: "var(--ink-400)" }}>Photo · {e}</div>}
+                </div>
+                <div style={{ padding: "16px 18px" }}>
+                  <div style={{ ...mono(10), color: "var(--violet)" }}>Episode {String(i + 1).padStart(2, "0")}</div>
+                  <div style={{ font: "var(--text-h3)", fontSize: 24, marginTop: 6 }}>{e}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+      <section id="cur-kadamba" style={{ padding: pad, background: "var(--surface-tint)", scrollMarginTop: 80 }}>
+        <div style={wrap}>
+          <Head index="02" kicker="Curations" title={k.title} sub={k.sub} />
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(min(100%,240px),1fr))", gap: 18 }}>
+            {k.videos.map((v, i) => (
+              <div key={v} style={{ background: "#fff", border: "1px solid var(--ink-100)", borderRadius: "var(--radius-lg)", overflow: "hidden", boxShadow: "var(--shadow-sm)" }}>
+                <div style={{ aspectRatio: "4/5", background: "var(--ink-900)" }}>
+                  <video src={vb + v} controls playsInline preload="metadata" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}></video>
+                </div>
+                <div style={{ padding: "16px 18px" }}>
+                  <div style={{ ...mono(10), color: "var(--violet)" }}>Reel {String(i + 1).padStart(2, "0")}</div>
+                  <div style={{ font: "var(--text-h3)", fontSize: 24, marginTop: 6 }}>Saturday Takeover</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
 function Videos() {
   const [f, ...rest] = window.NEPHRA_DATA.videos;
   const yt = window.NEPHRA_DATA.socials[1].url;
   return (
     <section style={{ padding: pad }}>
       <div style={wrap}>
+        <Head index="01" kicker="Videos" title="Showreel" />
+        <video src={window.NEPHRA_DATA.videoBase + window.NEPHRA_DATA.showreel} controls playsInline preload="metadata" style={{ width: "100%", display: "block", borderRadius: "var(--radius-lg)", background: "var(--ink-900)", boxShadow: "var(--shadow-md)", maxHeight: "80vh", marginBottom: "clamp(48px,6vw,80px)" }}></video>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", gap: 24, flexWrap: "wrap" }}>
-          <Head index="01" kicker="Videos" title="Long-form sets, recorded live." sub="Live recordings and visual sessions from the YouTube archive." />
+          <Head index="02" kicker="Long Format · YouTube" title="Long-form sets, recorded live." sub="Live recordings and visual sessions from the YouTube archive." />
           <div style={{ marginBottom: "clamp(28px,4vw,48px)" }}><MBtn variant="outline" as="a" href={yt} target="_blank">YouTube Channel →</MBtn></div>
         </div>
         <div style={{ marginBottom: 18 }}><VideoTile v={f} big n={1} /></div>
@@ -210,4 +257,4 @@ function Releases() {
   );
 }
 
-Object.assign(window, { Videos, Playlists, Shows, Releases });
+Object.assign(window, { Curations, Videos, Playlists, Shows, Releases });
