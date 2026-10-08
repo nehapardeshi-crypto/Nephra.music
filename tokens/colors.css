@@ -51,7 +51,7 @@
   /* signature brand gradient — the pink→violet spine common to all */
   --grad-signature: linear-gradient(90deg, #FF4FD8 0%, #7C4DFF 100%); /* @kind color */
   /* soft page glow used behind hero content */
-  --glow-violet: radial-gradient(circle at 50% 45%, rgba(176,125,255,0.55) 0%, rgba(176,125,255,0.18) 42%, rgba(176,125,255,0) 70%); /* @kind color */
+  --glow-violet: radial-gradient(farthest-side at 50% 45%, rgba(176,125,255,0.55) 0%, rgba(176,125,255,0.18) 42%, rgba(176,125,255,0) 70%); /* @kind color */
 
   /* ---- Semantic status (kept minimal, brand-tinted) ------ */
   --success: #17B586;
