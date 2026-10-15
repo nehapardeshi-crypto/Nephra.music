@@ -37,7 +37,7 @@ function AccessRequest() {
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
         <div style={{ maxWidth: 560 }}>
           <div style={{ ...mono(11, { fontWeight: 700 }), marginBottom: 6, color: "#fff" }}>Full-resolution photos &amp; logos</div>
-          <div style={{ font: "var(--text-body)", color: "rgba(255,255,255,0.82)" }}>Downloads are shared on request. Tell us who you are and Neha will send the files to your inbox once approved.</div>
+          <div style={{ font: "var(--text-body)", color: "rgba(255,255,255,0.82)" }}>Downloads are shared on request. Tell us who you are and Nephra will send the files to your inbox once approved.</div>
         </div>
         {!open && state !== "done" && <KBtn variant="gradient" size="lg" onClick={() => setOpen(true)}>Request Access</KBtn>}
       </div>
