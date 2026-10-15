@@ -76,7 +76,7 @@ window.NEPHRA_DATA = {
   rider: {
     tech: ["2 × CDJ-3000", "1 × Pioneer DJM-A9 mixer", "1 × powered booth monitor, right side of the DJ console on a 5 ft stand", "LAN cables to link CDJs"],
     console: ["Console table no higher than 2.5 ft so the artist can perform comfortably", "Decks set up on a solid surface, free from vibration or movement"],
-    hospitality: ["Cab pick-up and drop to and from the venue"],
+    hospitality: ["Cab pick-up and drop to and from the venue", "Coconut water, 2 litres", "Twinings Classic Assam tea"],
   },
   contact: [
     ["Based", "Hyderabad, India", null],
