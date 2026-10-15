@@ -1,0 +1,70 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: NEPHRA press-kit access gate (request -> approve -> branded email)
+Parameters:
+  CodeBucket: { Type: String }
+  CodeKey: { Type: String }
+Resources:
+  AssetsBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub nephra-press-assets-${AWS::AccountId}
+      PublicAccessBlockConfiguration: { BlockPublicAcls: true, BlockPublicPolicy: true, IgnorePublicAcls: true, RestrictPublicBuckets: true }
+      BucketEncryption: { ServerSideEncryptionConfiguration: [{ ServerSideEncryptionByDefault: { SSEAlgorithm: AES256 } }] }
+  RequestsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: nephra-press-requests
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions: [{ AttributeName: id, AttributeType: S }]
+      KeySchema: [{ AttributeName: id, KeyType: HASH }]
+      TimeToLiveSpecification: { AttributeName: ttl, Enabled: true }
+  FnRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement: [{ Effect: Allow, Principal: { Service: lambda.amazonaws.com }, Action: sts:AssumeRole }]
+      ManagedPolicyArns: [arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole]
+      Policies:
+        - PolicyName: access
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - { Effect: Allow, Action: [dynamodb:GetItem, dynamodb:PutItem, dynamodb:UpdateItem], Resource: !GetAtt RequestsTable.Arn }
+              - { Effect: Allow, Action: s3:GetObject, Resource: !Sub "${AssetsBucket.Arn}/*" }
+              - { Effect: Allow, Action: ses:SendEmail, Resource: "*" }
+  Fn:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: nephra-press-access
+      Runtime: nodejs22.x
+      Handler: index.handler
+      Timeout: 20
+      MemorySize: 256
+      Role: !GetAtt FnRole.Arn
+      Code: { S3Bucket: !Ref CodeBucket, S3Key: !Ref CodeKey }
+      Environment:
+        Variables:
+          TABLE: !Ref RequestsTable
+          BUCKET: !Ref AssetsBucket
+          FROM: "NEPHRA <noreply@nephra.music>"
+          OWNER: Nehapardeshi@gmail.com
+          SITE: https://nephra.music
+  FnUrl:
+    Type: AWS::Lambda::Url
+    Properties:
+      TargetFunctionArn: !Ref Fn
+      AuthType: NONE
+      Cors:
+        AllowOrigins: [https://nephra.music, https://www.nephra.music, "https://main.d2f7wf9mnw7dqt.amplifyapp.com"]
+        AllowMethods: [POST]
+        AllowHeaders: [content-type]
+  UrlPermission:
+    Type: AWS::Lambda::Permission
+    Properties: { FunctionName: !Ref Fn, Action: lambda:InvokeFunctionUrl, Principal: "*", FunctionUrlAuthType: NONE }
+  InvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties: { FunctionName: !Ref Fn, Action: lambda:InvokeFunction, Principal: "*", InvokedViaFunctionUrl: true }
+Outputs:
+  ApiUrl: { Value: !GetAtt FnUrl.FunctionUrl }
+  Bucket: { Value: !Ref AssetsBucket }
