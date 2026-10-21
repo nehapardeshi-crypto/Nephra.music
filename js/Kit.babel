@@ -1,8 +1,6 @@
 /* NEPHRA website — press kit, social, contact. */
 const { Button: KBtn } = window.NEPHRADesignSystem_3a7a44;
 
-const PRESS_API = "https://u4huz7niiewiodlwbkqt7qn4wq0vydzf.lambda-url.ap-south-1.on.aws";
-
 function DlTile({ src, label, bg, logo, ext = "JPG", locked }) {
   return (
     <div style={{ background: "#fff", border: "1px solid var(--ink-100)", borderRadius: "var(--radius-lg)", overflow: "hidden" }}>
@@ -15,46 +13,20 @@ function DlTile({ src, label, bg, logo, ext = "JPG", locked }) {
   );
 }
 
-const fieldStyle = { width: "100%", boxSizing: "border-box", padding: "13px 14px", border: "1px solid var(--ink-200)", borderRadius: 10, font: "var(--text-body)", background: "#fff", color: "var(--ink-900)" };
+const DRIVE_PHOTOS = "https://drive.google.com/drive/folders/1ReXPvgnLzrNCFj5yNQ7w0X0sN9mMLs5a?usp=drive_link";
+const DRIVE_VIDEOS = "https://drive.google.com/drive/folders/1-1oij395PjzzVrSZ505Sv4nk-OvTyLQJ?usp=drive_link";
 
-function AccessRequest() {
-  const [open, setOpen] = React.useState(false);
-  const [state, setState] = React.useState("idle");
-  const [err, setErr] = React.useState("");
-  const submit = async (e) => {
-    e.preventDefault();
-    const f = new FormData(e.target);
-    setState("sending"); setErr("");
-    try {
-      const r = await fetch(`${PRESS_API}/request`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(Object.fromEntries(f)) });
-      const j = await r.json().catch(() => ({}));
-      if (!r.ok) throw new Error(j.error || "Something went wrong. Please try again.");
-      setState("done");
-    } catch (x) { setErr(x.message); setState("idle"); }
-  };
+function DriveLinks() {
   return (
-    <div style={{ background: "#1A1030", color: "#fff", borderRadius: "var(--radius-lg)", padding: "clamp(20px,3vw,32px)", marginBottom: 24 }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
-        <div style={{ maxWidth: 560 }}>
-          <div style={{ ...mono(11, { fontWeight: 700 }), marginBottom: 6, color: "#fff" }}>Full-resolution photos &amp; logos</div>
-          <div style={{ font: "var(--text-body)", color: "rgba(255,255,255,0.82)" }}>Downloads are shared on request. Tell us who you are and Nephra will send the files to your inbox once approved.</div>
-        </div>
-        {!open && state !== "done" && <KBtn variant="gradient" size="lg" onClick={() => setOpen(true)}>Request Access</KBtn>}
+    <div style={{ background: "#1A1030", color: "#fff", borderRadius: "var(--radius-lg)", padding: "clamp(20px,3vw,32px)", marginBottom: 24, display: "flex", justifyContent: "space-between", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
+      <div style={{ maxWidth: 560 }}>
+        <div style={{ ...mono(11, { fontWeight: 700 }), marginBottom: 6, color: "#fff" }}>Full-resolution photos &amp; videos</div>
+        <div style={{ font: "var(--text-body)", color: "rgba(255,255,255,0.82)" }}>Download the full press photo set and performance videos from Google Drive.</div>
       </div>
-      {state === "done" ? (
-        <div role="status" style={{ marginTop: 20, font: "var(--text-body)", color: "#fff" }}><b>Request sent.</b> Check your inbox: we've sent a confirmation, and you'll hear back by email once it's reviewed.</div>
-      ) : open && (
-        <form onSubmit={submit} style={{ marginTop: 20, display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,240px),1fr))", gap: 12 }}>
-          <input name="name" required maxLength={120} placeholder="Full name" autoComplete="name" aria-label="Full name" style={fieldStyle} />
-          <input name="company" required maxLength={160} placeholder="Company / agency" autoComplete="organization" aria-label="Company or agency" style={fieldStyle} />
-          <input name="phone" required type="tel" maxLength={40} placeholder="Phone" autoComplete="tel" aria-label="Phone" style={fieldStyle} />
-          <input name="email" required type="email" maxLength={160} placeholder="Email" autoComplete="email" aria-label="Email" style={fieldStyle} />
-          <div style={{ gridColumn: "1 / -1", display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
-            <KBtn variant="gradient" size="lg" type="submit" disabled={state === "sending"}>{state === "sending" ? "Sending…" : "Send Request"}</KBtn>
-            {err && <span role="alert" style={{ ...mono(11), color: "#ff8fa8" }}>{err}</span>}
-          </div>
-        </form>
-      )}
+      <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+        <KBtn variant="gradient" size="lg" as="a" href={DRIVE_PHOTOS} target="_blank" rel="noopener noreferrer">↓ Press Photos</KBtn>
+        <KBtn variant="gradient" size="lg" as="a" href={DRIVE_VIDEOS} target="_blank" rel="noopener noreferrer">↓ Performance Videos</KBtn>
+      </div>
     </div>
   );
 }
@@ -98,18 +70,15 @@ function PressKit() {
         </div>
 
         <div style={kitBlock}>
-          <h3 style={kitSub}>Press Photos · Full resolution on request</h3>
-          <AccessRequest />
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(min(100%,190px),1fr))", gap: 16 }}>
-            {D.photos.map(([f, hi, l], i) => i === 1 ? <DlTile key={f} src={PH(f)} label={l} /> : <DlTile key={f} locked src={`./assets/preview/photo-${f.replace("press-", "")}.jpg`} label={l} />)}
-          </div>
+          <h3 style={kitSub}>Press Photos</h3>
+          <DriveLinks />
         </div>
 
         <div style={kitBlock}>
-          <h3 style={kitSub}>Logos · PNG on request</h3>
+          <h3 style={kitSub}>Logos</h3>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(min(100%,190px),1fr))", gap: 16 }}>
-            {[["black", "Black", "#fff"], ["white", "White", "var(--ink-900)"], ["disco", "Disco", "var(--ink-900)"], ["sunset", "Sunset", "var(--ink-900)"], ["house", "House", "var(--ink-900)"], ["techhouse", "Tech House", "var(--ink-900)"]].map(([f, l, bg]) => (
-              f === "black" ? <DlTile key={f} logo src="./assets/logos/nephra-black.png" label={l} bg={bg} ext="PNG" /> : <DlTile key={f} logo locked src={`./assets/preview/logo-${f}.png`} label={l} bg={bg} ext="PNG" />
+            {[["black", "Black", "#fff"], ["white", "White", "var(--ink-900)"]].map(([f, l, bg]) => (
+              <a key={f} href={`./assets/logos/nephra-${f}.png`} download="" style={{ textDecoration: "none", color: "inherit" }}><DlTile logo src={`./assets/logos/nephra-${f}.png`} label={l} bg={bg} ext="PNG" /></a>
             ))}
           </div>
         </div>
