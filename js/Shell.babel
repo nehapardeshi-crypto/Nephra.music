@@ -85,14 +85,6 @@ function Home({ go, grad, palette, setPalette, photo }) {
         <div style={{ ...wrap, marginTop: "clamp(40px,5vw,64px)" }}><Fader value={{ disco: 0.2, house: 0.45, techhouse: 0.72, sunset: 0.9 }[palette] ?? 0.5} /></div>
       </section>
 
-      <section aria-label="Gallery" style={{ padding: "0 0 clamp(48px,6vw,88px)", overflow: "hidden" }}>
-        <div style={{ display: "flex", gap: 14, overflowX: "auto", padding: "0 clamp(20px,5vw,56px)", scrollbarWidth: "none", scrollSnapType: "x mandatory" }}>
-          {D.photos.map(([f, , l]) => (
-            <img key={f} src={PH(f)} alt={l} loading="lazy" decoding="async" style={{ flex: "0 0 auto", height: "clamp(240px,30vw,380px)", aspectRatio: "3/4", objectFit: "cover", objectPosition: "50% 25%", borderRadius: "var(--radius-lg)", scrollSnapAlign: "start" }} />
-          ))}
-        </div>
-      </section>
-
       <section style={{ padding: "clamp(40px,5vw,72px) clamp(20px,5vw,56px)", background: "var(--ink-900)", color: "#fff", position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", right: "-10%", top: "-60%", width: "50%", height: "220%", background: grad, opacity: 0.35, filter: "blur(80px)", borderRadius: "50%" }} />
         <div style={{ ...wrap, position: "relative", display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(min(100%,200px),1fr))", gap: "clamp(20px,3vw,48px)" }}>
