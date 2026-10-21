@@ -55,7 +55,7 @@ for (const f of BABEL_FILES) {
 // index.html: swap dev/babel-standalone CDN tags for prod builds, point .babel
 // scripts at their compiled .js siblings, and compile the inline App script
 // (kept as JSX in source so the tweaks-panel EDITMODE marker stays editable).
-let html = fs.readFileSync(path.join(ROOT, "index.html"), "utf8");
+let html = fs.readFileSync(path.join(ROOT, "index.html"), "utf8").replace(/\r\n/g, "\n");
 
 html = html.replace(
   /<script src="https:\/\/unpkg\.com\/react@18\.3\.1\/umd\/react\.development\.js"[^>]*><\/script>/,
